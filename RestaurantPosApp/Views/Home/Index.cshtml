@@ -12,7 +12,8 @@
             </ul>
 
             <div class="tab-content">
-                <div id="addCategory" class="tab-pane fade in active">@Html.ActionLink("CreateMenuCategory","CreateMenuCategory","Home")</div>
+                @*<div id="addCategory" class="tab-pane fade in active">@{await Html.RenderPartialAsync("CreateMenuCategory");}</div>*@
+                <div id="addCategory" class="tab-pane fade in active">@await Component.InvokeAsync("CreateMenuCategory")</div>
             </div>
         </div>
         <div class="col-sm-4"></div>
@@ -20,6 +21,9 @@
 </div>
 
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 
 
 

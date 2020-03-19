@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace RestaurantPosApp.Data
 {
-    public class OrderMenuRepository : RepositoryBase<OrderMenuItem>, IOrderMenuItemRepository
+    public class OrderMenuItemRepository : RepositoryBase<OrderMenuItem>, IOrderMenuItemRepository
     {
-        public OrderMenuRepository(ApplicationDbContext applicationDbContext)
+        public OrderMenuItemRepository(ApplicationDbContext applicationDbContext)
             :base(applicationDbContext)
         {
         }
