@@ -2,7 +2,24 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8">
+
+            <ul class="nav nav-tabs" id="navTabs">
+                <li class="active"><a data-toggle="tab" href="#addCategory">Add Menu Category</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="addCategory" class="tab-pane fade in active">@Html.ActionLink("CreateMenuCategory","CreateMenuCategory","Home")</div>
+            </div>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
 </div>
+
+
+
+
+

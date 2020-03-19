@@ -23,6 +23,14 @@ namespace RestaurantPosApp.Controllers
             return View();
         }
 
+        public IActionResult CreateMenuCategory() => View();
+
+        [HttpPost]
+        public IActionResult CreateMenuCategory(MenuCategory menuCategory)
+        {
+            return View(menuCategory);
+        }
+
         public IActionResult Privacy()
         {
             return View();
