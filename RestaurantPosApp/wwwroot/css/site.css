@@ -23,6 +23,10 @@ a {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+#orderBox{
+    height: 100vh;
+    border: 2px solid black;
+}
 
 /* Sticky footer styles
 -------------------------------------------------- */

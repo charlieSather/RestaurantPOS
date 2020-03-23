@@ -12,6 +12,7 @@ using RestaurantPosApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RestaurantPosApp.Contracts;
 
 namespace RestaurantPosApp
 {
@@ -30,10 +31,14 @@ namespace RestaurantPosApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                .AddEntityFrameworkStores<ApplicationDbContext>()
                .AddDefaultUI()
                .AddDefaultTokenProviders();
+
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -65,7 +70,7 @@ namespace RestaurantPosApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Owner}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

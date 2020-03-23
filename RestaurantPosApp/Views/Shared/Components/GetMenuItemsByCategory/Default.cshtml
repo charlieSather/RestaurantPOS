@@ -1,0 +1,22 @@
+﻿@model IEnumerable<RestaurantPosApp.Models.MenuItem>
+
+@foreach (var item in Model)
+{
+
+    <div class="card" style="width:18rem;">
+        <div class="card-header">@item.Name</div>
+        <div class="card-body">
+            <h4>Ingredients</h4>
+            <ul class="list-group">
+                @foreach (var recipeItem in item.Recipe)
+                {
+                    <li class="list-group-item">@recipeItem.Ingredient.Name</li>
+                }
+            </ul>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary" data-menuItem-id="@item.MenuItemId" data-menuItem-name="@item.Name" data-menuItem-price="@item.Price" onclick="addToOrder(this)">Add to Order</button>
+            @item.Price
+        </div>
+</div>
+}

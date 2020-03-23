@@ -11,6 +11,8 @@ namespace RestaurantPosApp.Contracts
         void CreateMenuItemIngredient(MenuItemIngredient menuItemIngredient);
         void UpdateMenuItemIngredient(MenuItemIngredient menuItemIngredient);
         void DeleteMenuItemIngredient(MenuItemIngredient menuItemIngredient);
+        void AddListOfMenuItemIngredients(List<MenuItemIngredient> menuItemIngredients);
+        void UpdateListOfMenuItemIngredients(List<MenuItemIngredient> menuItemIngredients);
         MenuItemIngredient GetMenuItemIngredient(int id);
         MenuItemIngredient GetMenuItemIngredientByIngredientId(int ingredientId);
         IQueryable<MenuItemIngredient> GetMenuItemIngredientsByMenuItemId(int menuItemId);

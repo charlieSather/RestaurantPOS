@@ -21,7 +21,13 @@ namespace RestaurantPosApp.Data
         public MenuItem GetMenuItem(int id) =>
             FindByCondition(x => x.MenuItemId == id)
                 .Include(mc => mc.MenuCategory)
-                .Include(menuItem => menuItem.Recipe)
+                .Include(menuItem => menuItem.Recipe).ThenInclude(i => i.Ingredient)
                 .FirstOrDefault();
+
+        public IQueryable<MenuItem> GetMenuItemsByCategory(int categoryId) =>
+             FindByCondition(x => x.MenuCategoryId == categoryId)
+                 .Include(mc => mc.MenuCategory)
+                 .Include(menuItem => menuItem.Recipe).ThenInclude(i => i.Ingredient);
+
     }
 }

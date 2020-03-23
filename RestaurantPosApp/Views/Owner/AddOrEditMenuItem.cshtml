@@ -1,0 +1,123 @@
+﻿@model RestaurantPosApp.Models.MenuItemViewModel
+@{
+    ViewData["Title"] = "AddMenuItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Add Menu Item</h1>
+
+<form asp-action="AddOrEditMenuItem">
+    <div class="row">
+        <div class="col-md-6">
+            @*<form asp-action="AddMenuItem   ">*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MenuItem.Name" class="control-label"></label>
+                <input asp-for="MenuItem.Name" class="form-control" />
+                <span asp-validation-for="MenuItem.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MenuItem.Price" class="control-label"></label>
+                <input asp-for="MenuItem.Price" class="form-control" />
+                <span asp-validation-for="MenuItem.Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MenuItem.Description" class="control-label"></label>
+                <input asp-for="MenuItem.Description" class="form-control" />
+                <span asp-validation-for="MenuItem.Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MenuItem.Disabled" class="control-label"></label>
+                <input asp-for="MenuItem.Disabled" class="form-control" />
+                <span asp-validation-for="MenuItem.Disabled" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuItem.MenuCategory.CategoryName" class="control-label"></label>
+                <select asp-for="MenuItem.MenuCategoryId" asp-items="@ViewBag.MenuCategories" class="form-control"></select>
+                <span asp-validation-for="MenuItem.MenuCategoryId" class="text-danger"></span>
+            </div>
+            @if (Model.MenuItem != null)
+            {
+                <input hidden value="@Model.MenuItem.MenuItemId" />
+
+            }
+            <div class="form-group">
+                <input type="submit" value="Create Menu Item" class="btn btn-primary" />
+            </div>
+
+
+        </div>
+        <div class="col-md-6">
+            @*<form asp-action="AddRecipe" id="recipeForm">*@
+            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+            <div id="recipeContainer">
+
+                <div class="border my-3">
+                    <div class="form-group p-sm-4">
+                        <label asp-for="Recipe[0].Quantity"></label>
+                        <input asp-for="Recipe[0].Quantity" class="form-control" />
+                        <span asp-validation-for="Recipe[0].Quantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group p-sm-4" id="selectList">
+                        <label asp-for="Recipe[0].Ingredient.Name"></label>
+                        <select asp-for="Recipe[0].IngredientId" class="form-control" asp-items="@ViewBag.Ingredients"></select>
+                        <span asp-validation-for="Recipe[0].IngredientId" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                @*  *@
+
+                @if (Model.Recipe != null)
+                {
+                    for (int i = 1; i < Model.Recipe.Count; i++)
+                    {
+                        <div class="border my-3">
+                            <div class="form-group p-sm-4">
+                                <label asp-for="Recipe[i].Quantity"></label>
+                                <input asp-for="Recipe[i].Quantity" class="form-control" />
+                                <span asp-validation-for="Recipe[i].Quantity" class="text-danger"></span>
+                            </div>
+                            <div class="form-group p-sm-4" id="selectList">
+                                <label asp-for="Recipe[i].Ingredient.Name"></label>
+                                <select asp-for="Recipe[i].IngredientId" class="form-control" asp-items="@ViewBag.Ingredients"></select>
+                                <span asp-validation-for="Recipe[i].IngredientId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    }
+
+                }
+
+
+            </div>
+
+            <div class="form-group">
+                <button type="button" id="addAnotherButton" class="btn btn-primary">Add another ingredient</button>
+            </div>
+
+            @*<div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>*@
+            @*</form>*@
+        </div>
+    </div>
+</form>
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+
+
+
+

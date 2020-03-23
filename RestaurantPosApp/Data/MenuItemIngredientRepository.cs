@@ -16,8 +16,25 @@ namespace RestaurantPosApp.Data
         }
 
         public void CreateMenuItemIngredient(MenuItemIngredient menuItemIngredient) => Create(menuItemIngredient);
+
         public void DeleteMenuItemIngredient(MenuItemIngredient menuItemIngredient) => Delete(menuItemIngredient);
         public void UpdateMenuItemIngredient(MenuItemIngredient menuItemIngredient) => Update(menuItemIngredient);
+        public void AddListOfMenuItemIngredients(List<MenuItemIngredient> menuItemIngredients)
+        {
+            //foreach (var menuItemIngredient in menuItemIngredients)
+            //{
+            //    menuItemIngredient.MenuItemId = menuItemId;
+            //}
+            AddRange(menuItemIngredients);
+        }
+        public void UpdateListOfMenuItemIngredients(List<MenuItemIngredient> menuItemIngredients)
+        {
+            foreach (var menuItemIngredient in menuItemIngredients)
+            {
+                Update(menuItemIngredient);
+            }
+        }
+
         public MenuItemIngredient GetMenuItemIngredient(int id) =>
             FindByCondition(x => x.MenuItemIngredientId == id)
                 .Include(m => m.MenuItem)

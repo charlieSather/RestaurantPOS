@@ -12,6 +12,7 @@ namespace RestaurantPosApp.Contracts
         void UpdateIngredient(Ingredient ingredient);
         void DeleteIngredient(Ingredient ingredient);
         IQueryable<Ingredient> GetIngredients();
+        IEnumerable<Ingredient> GetIngredients(IEnumerable<int> ids);
         Ingredient GetIngredient(int id);
     }
 }

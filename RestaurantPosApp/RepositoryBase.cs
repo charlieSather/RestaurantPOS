@@ -28,9 +28,17 @@ namespace RestaurantPosApp
         {
             ApplicationDbContext.Set<T>().Add(entity);
         }
+        public void AddRange(IEnumerable<T> entities)
+        {
+            ApplicationDbContext.Set<T>().AddRange(entities);
+        }
         public void Update(T entity)
         {
             ApplicationDbContext.Set<T>().Update(entity);
+        }
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            ApplicationDbContext.Set<T>().UpdateRange(entities);
         }
         public void Delete(T entity)
         {

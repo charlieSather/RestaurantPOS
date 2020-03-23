@@ -12,6 +12,7 @@ namespace RestaurantPosApp.Models
         public int IngredientId { get; set; }
 
         [Required]
+        [Display(Name ="Ingredient Name")]
         public string Name { get; set; }
 
         [Required]
