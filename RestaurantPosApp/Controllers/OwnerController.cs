@@ -34,7 +34,6 @@ namespace RestaurantPosApp.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 if (!_repo.MenuCategory.MenuCategoryExists(menuCategory.CategoryName))
                 {
                     _repo.MenuCategory.CreateMenuCategory(menuCategory);
@@ -79,11 +78,11 @@ namespace RestaurantPosApp.Controllers
                     {
                         var ingredient = ingredients.Single(x => x.IngredientId == item.IngredientId);
                         item.MenuItemId = menuItemViewModel.MenuItem.MenuItemId;
-                        item.Cost = ((decimal) item.Quantity / ingredient.BaseUnitOfWeight) * ingredient.PricePerUnit;
+                        item.Cost = ((decimal)item.Quantity / ingredient.BaseUnitOfWeight) * ingredient.PricePerUnit;
                     }
 
                     _repo.MenuItemIngredient.AddListOfMenuItemIngredients(menuItemViewModel.Recipe);
-                    _repo.Save();           
+                    _repo.Save();
                 }
                 else
                 {
@@ -103,10 +102,12 @@ namespace RestaurantPosApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ingredients = _repo.MenuItemIngredient.GetIngredientsByMenuItemIds(placedOrder.OrderedItems.Select(x => x.MenuItemId).Distinct().ToList()).Distinct().ToList();
-
-                var inventoryItems = 1;
-                if (InventoryCanMake(placedOrder.OrderedItems))
+                //var ingredients = _repo.MenuItemIngredient.GetIngredientsByMenuItemIds(placedOrder.OrderedItems.Select(x => x.MenuItemId).Distinct().ToList()).Distinct().ToList();
+                if (InventoryCanMakeOrder(placedOrder))
+                {
+                    _repo.PlacedOrder.CreateOrder(placedOrder);
+                }
+                else
                 {
 
                 }
@@ -117,19 +118,64 @@ namespace RestaurantPosApp.Controllers
 
 
 
-            return View();
+            return Json(placedOrder);
         }
 
-        public bool InventoryCanMake(List<OrderMenuItem> orderedItems)
+        public bool InventoryCanMakeOrder(PlacedOrder placedOrder)
         {
             bool canMake = true;
-            foreach (var item in orderedItems)
+            foreach (var item in placedOrder.OrderedItems)
             {
-                
+                item.MenuItem = _repo.MenuItem.GetMenuItem(item.MenuItemId);
             }
 
             return canMake;
         }
+        public IActionResult AddIngredients() => View();
+
+        [HttpPost]
+        public IActionResult AddIngredients(List<Ingredient> ingredients)
+        {
+            if (ModelState.IsValid)
+            {
+                _repo.Ingredient.AddRange(ingredients);
+                _repo.Save();
+            }
+            else
+            {
+                return View(ingredients);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult AddInventory()
+        {
+            ViewBag.Ingredients = new SelectList(_repo.Ingredient.GetIngredients(), "IngredientId", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddInventory(List<InventoryItem> inventoryItems)
+        {
+            if (ModelState.IsValid)
+            {
+                List<Task<Ingredient>> Tasks = new List<Task<Ingredient>>();
+                foreach (var inventoryItem in inventoryItems)
+                {
+                    inventoryItem.Ingredient = await Task.Run(() => _repo.Ingredient.GetIngredientAsNoTracking(inventoryItem.IngredientId));
+                    inventoryItem.BulkPrice = ((decimal)inventoryItem.AmountInGrams / inventoryItem.Ingredient.BaseUnitOfWeight) * inventoryItem.Ingredient.PricePerUnit;
+                    inventoryItem.IsLow = InventoryItemIsLow(inventoryItem);
+                    inventoryItem.Ingredient = null; //Need to make Ingredient null or ef core tries to insert it into db again which causes an exception since it has a PK already and will cause a collision
+                }
+                _repo.InventoryItem.AddRangeOfInventoryItems(inventoryItems);
+                _repo.Save();
+            }
+            else
+            {
+                return View(inventoryItems);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        public bool InventoryItemIsLow(InventoryItem inventoryItem) => inventoryItem.AmountInGrams <= inventoryItem.LowerThreshold;
 
         public void AddRecipe(List<MenuItemIngredient> menuItemIngredients)
         {

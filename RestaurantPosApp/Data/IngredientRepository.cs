@@ -1,4 +1,5 @@
-﻿using RestaurantPosApp.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantPosApp.Contracts;
 using RestaurantPosApp.Models;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,10 @@ namespace RestaurantPosApp.Data
         }
 
         public void CreateIngredient(Ingredient ingredient) => Create(ingredient);
+        public void AddListOfIngredients(List<Ingredient> ingredients) => AddRange(ingredients);
         public void DeleteIngredient(Ingredient ingredient) => Delete(ingredient);
         public void UpdateIngredient(Ingredient ingredient) => Update(ingredient);
+        public Ingredient GetIngredientAsNoTracking(int id) => FindByCondition(x => x.IngredientId == id).AsNoTracking().FirstOrDefault();
         public Ingredient GetIngredient(int id) => FindByCondition(x => x.IngredientId == id).FirstOrDefault();
         public IQueryable<Ingredient> GetIngredients() => FindAll();
         public IEnumerable<Ingredient> GetIngredients(IEnumerable<int> IngredientIds)

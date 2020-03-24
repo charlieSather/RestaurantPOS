@@ -9,6 +9,7 @@ namespace RestaurantPosApp.Contracts
     public interface IInventoryItemRepository : IRepositoryBase<InventoryItem>
     {
         void CreateInventoryItem(InventoryItem inventoryItem);
+        void AddRangeOfInventoryItems(IEnumerable<InventoryItem> inventoryItems);
         void UpdateInventoryItem(InventoryItem inventoryItem);
         void UpdateInventoryItems(List<InventoryItem> inventoryItems);
         void DeleteInventoryItem(InventoryItem inventoryItem);

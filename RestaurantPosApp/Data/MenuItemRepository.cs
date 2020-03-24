@@ -29,5 +29,7 @@ namespace RestaurantPosApp.Data
                  .Include(mc => mc.MenuCategory)
                  .Include(menuItem => menuItem.Recipe).ThenInclude(i => i.Ingredient);
 
+        public IEnumerable<MenuItem> GetMenuItemsByIds(IEnumerable<int> menuItemIds) =>
+            menuItemIds.Join(FindAll().Include(x => x.Recipe).ThenInclude(i => i.Ingredient), id => id, menuItem => menuItem.MenuItemId, (id, menuItem) => menuItem);
     }
 }

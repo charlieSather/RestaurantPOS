@@ -16,10 +16,12 @@ namespace RestaurantPosApp.Models
         public string Name { get; set; }
 
         [Required]
+        [Display(Name="Base Unit of Weight")]
         public int BaseUnitOfWeight { get; set; }
 
         [Required]
         [Column(TypeName = ("decimal(12,2)"))]
+        [Display(Name = "Price Per Unit ")]
         public decimal PricePerUnit { get; set; }
 
         public override bool Equals(object obj)

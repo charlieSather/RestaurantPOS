@@ -13,6 +13,6 @@ namespace RestaurantPosApp.Contracts
         void DeleteMenuItem(MenuItem menuItem);
         MenuItem GetMenuItem(int id);
         IQueryable<MenuItem> GetMenuItemsByCategory(int categoryId);
-
+        IEnumerable<MenuItem> GetMenuItemsByIds(IEnumerable<int> menuItemIds);
     }
 }

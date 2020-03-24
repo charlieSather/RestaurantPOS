@@ -14,12 +14,12 @@ function addToOrder(obj) {
     var nameColumn = $("<span>").html(name);
     var priceColumn = $("<span>", { "name": "price", "data-val": price }).html(price);
     var removeButton = $("<button>", { "class": "btn btn-danger btn-sm", "type": "button" }).html("Remove");
-    var quantity = $("<input>", { "type": "number", "value": 1, "min": 1 });
+    var quantity = $("<input>", { "class":"quantityInput", "type": "number", "value": 1, "min": 1 });
 
     removeButton.on("click", removeItem);
     quantity.on("change", updateQuantity);
 
-    var div = $("<div>", { "class": "d-flex d-inline m-2", "name": "OrderMenuItem", "value": id }).append(nameColumn, priceColumn, quantity, removeButton);
+    var div = $("<div>", {"class":"order-item", "name": "OrderMenuItem", "value": id }).append(nameColumn, priceColumn, quantity, removeButton);
 
     $("#orderBox").append(div);
     updateOrderTotal();
@@ -168,8 +168,6 @@ function setupIngredientHandler() {
         parentDiv.append(selectList);
 
         $("#recipeContainer").append(parentDiv);
-
-        //parentDiv.appendTo($("#recipeContainer"));
 
         itemNum++;
         return false;

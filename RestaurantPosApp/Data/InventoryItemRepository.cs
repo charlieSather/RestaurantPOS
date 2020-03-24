@@ -18,6 +18,8 @@ namespace RestaurantPosApp.Data
         public void CreateInventoryItem(InventoryItem inventoryItem) => Create(inventoryItem);
         public void DeleteInventoryItem(InventoryItem inventoryItem) => Delete(inventoryItem);
         public void UpdateInventoryItem(InventoryItem inventoryItem) => Update(inventoryItem);
+        public void AddRangeOfInventoryItems(IEnumerable<InventoryItem> inventoryItems) => AddRange(inventoryItems);
+
         public void UpdateInventoryItems(List<InventoryItem> inventoryItems)
         {
             foreach (var inventoryItem in inventoryItems)

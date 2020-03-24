@@ -1,0 +1,71 @@
+﻿@model List<RestaurantPosApp.Models.Ingredient>
+
+@{
+    ViewData["Title"] = "AddIngredients";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>AddIngredients</h1>
+
+<h4>Ingredient</h4>
+<hr />
+<form id="ingredients-form" asp-action="AddIngredients">
+
+    <div class="row mx-0">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-row w-100 my-2">
+            <div class="col-sm-4">
+                <label asp-for="@Model[0].Name" class="control-label"></label>
+                <input asp-for="@Model[0].Name" class="form-control" />
+                <span asp-validation-for="@Model[0].Name" class="text-danger"></span>
+            </div>
+            <div class="col-sm-4">
+                <label asp-for="@Model[0].BaseUnitOfWeight" class="control-label"></label>
+                <input asp-for="@Model[0].BaseUnitOfWeight" class="form-control" placeholder="Weight in grams" />
+                <span asp-validation-for="@Model[0].BaseUnitOfWeight" class="text-danger"></span>
+            </div>
+            <div class="col-sm-4">
+                <label asp-for="@Model[0].PricePerUnit" class="control-label"></label>
+                <input asp-for="@Model[0].PricePerUnit" class="form-control" />
+                <span asp-validation-for="@Model[0].PricePerUnit" class="text-danger"></span>
+            </div>
+        </div>
+
+        @if (Model != null)
+        {
+            for (int i = 1; i < Model.Count; i++)
+            {
+                <div class="form-row w-100 my-2">
+                    <div class="col-sm-4">
+                        <label asp-for="@Model[i].Name" class="control-label"></label>
+                        <input asp-for="@Model[i].Name" class="form-control" />
+                        <span asp-validation-for="@Model[i].Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label asp-for="@Model[i].BaseUnitOfWeight" class="control-label"></label>
+                        <input asp-for="@Model[i].BaseUnitOfWeight" class="form-control" placeholder="Weight in grams" />
+                        <span asp-validation-for="@Model[i].BaseUnitOfWeight" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label asp-for="@Model[i].PricePerUnit" class="control-label"></label>
+                        <input asp-for="@Model[i].PricePerUnit" class="form-control" />
+                        <span asp-validation-for="@Model[i].PricePerUnit" class="text-danger"></span>
+                    </div>
+                </div>
+
+            }
+
+        }
+        <div class="form-group mt-4 w-100 flex-row justify-content-center">
+            <input type="submit" value="Submit Ingredients" class="btn btn-primary" />
+            <button type="button" id="add-ingredient" class="btn btn-primary">Add Another Ingredient</button>
+        </div>
+    </div>
+</form>
+
+<script src="~/js/addIngredients.js" defer></script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

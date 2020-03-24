@@ -12,12 +12,15 @@ namespace RestaurantPosApp.Models
         public int InventoryItemId { get; set; }
 
         [Range(0, 1000000)]
+        [Display(Name ="Amount in grams")]
+        [Required]
         public int AmountInGrams { get; set; }
 
         [Column(TypeName = ("decimal(12,2)"))]
         public decimal BulkPrice { get; set; }
 
         [Range(0, 10000)]
+        [Display(Name ="Inventory is considered low at this amount")]
         public int LowerThreshold { get; set; }
         public bool IsLow { get; set; }
 

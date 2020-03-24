@@ -24,12 +24,33 @@ a {
   border-color: #1861ac;
 }
 #orderBox{
+    display: flex;
+    flex-direction: column;
     height: 75vh;
     border: 2px solid black;
 }
 #tab-content {
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.quantityInput{
+    width:15%;
+}
+.order-item{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4px;
+}
+/*undo margins in default bootstrap .row
+.row{
+    margin-right: 0;
+    margin-left: 0;
+}*/
+
+.btn-danger{
 }
 
 /* Sticky footer styles
