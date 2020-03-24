@@ -12,7 +12,7 @@ namespace RestaurantPosApp.Models
         public int IngredientId { get; set; }
 
         [Required]
-        [Display(Name ="Ingredient Name")]
+        [Display(Name = "Ingredient Name")]
         public string Name { get; set; }
 
         [Required]
@@ -21,5 +21,18 @@ namespace RestaurantPosApp.Models
         [Required]
         [Column(TypeName = ("decimal(12,2)"))]
         public decimal PricePerUnit { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Ingredient ingredient))
+            {
+                return false;
+            }
+            return ingredient.IngredientId == this.IngredientId;
+        }
+        public override int GetHashCode()
+        {
+            return IngredientId;
+        }
     }
 }

@@ -50,5 +50,9 @@ namespace RestaurantPosApp.Data
             FindByCondition(x => x.MenuItemId == menuItemId)
                 .Include(m => m.MenuItem)
                 .Include(i => i.Ingredient);
+
+        public IEnumerable<Ingredient> GetIngredientsByMenuItemIds(List<int> menuItemIds) =>
+            menuItemIds.Join(FindAll().Include(x=>x.Ingredient), menuItemId => menuItemId, i => i.MenuItemId, (menuItemId, i) => i.Ingredient);
+
     }
 }

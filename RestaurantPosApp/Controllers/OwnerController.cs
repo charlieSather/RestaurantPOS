@@ -97,6 +97,40 @@ namespace RestaurantPosApp.Controllers
             ViewBag.Ingredients = new SelectList(_repo.Ingredient.GetIngredients(), "IngredientId", "Name");
             return View(menuItemViewModel);
         }
+
+        [HttpPost]
+        public IActionResult CreateOrder(PlacedOrder placedOrder)
+        {
+            if (ModelState.IsValid)
+            {
+                var ingredients = _repo.MenuItemIngredient.GetIngredientsByMenuItemIds(placedOrder.OrderedItems.Select(x => x.MenuItemId).Distinct().ToList()).Distinct().ToList();
+
+                var inventoryItems = 1;
+                if (InventoryCanMake(placedOrder.OrderedItems))
+                {
+
+                }
+
+
+                return RedirectToAction(nameof(Index));
+            }
+
+
+
+            return View();
+        }
+
+        public bool InventoryCanMake(List<OrderMenuItem> orderedItems)
+        {
+            bool canMake = true;
+            foreach (var item in orderedItems)
+            {
+                
+            }
+
+            return canMake;
+        }
+
         public void AddRecipe(List<MenuItemIngredient> menuItemIngredients)
         {
         }

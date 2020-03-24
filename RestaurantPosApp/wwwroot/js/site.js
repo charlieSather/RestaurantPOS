@@ -11,51 +11,79 @@ function addToOrder(obj) {
     var id = $obj.data("menuitem-id");
     var price = $obj.data("menuitem-price");
 
-    var div = document.createElement("div");
-    div.setAttribute("name", "MenuItem");
-    div.setAttribute("value", id);
-    div.innerHTML = name + " " + price;
+    var nameColumn = $("<span>").html(name);
+    var priceColumn = $("<span>", { "name": "price", "data-val": price }).html(price);
+    var removeButton = $("<button>", { "class": "btn btn-danger btn-sm", "type": "button" }).html("Remove");
+    var quantity = $("<input>", { "type": "number", "value": 1, "min": 1 });
+
+    removeButton.on("click", removeItem);
+    quantity.on("change", updateQuantity);
+
+    var div = $("<div>", { "class": "d-flex d-inline m-2", "name": "OrderMenuItem", "value": id }).append(nameColumn, priceColumn, quantity, removeButton);
 
     $("#orderBox").append(div);
+    updateOrderTotal();
 
     return false;
 }
 
-//<div class="form-inline border my-3">
-//    <div class="form-group p-sm-4">
-//        <label asp-for="MenuItemIngredient.Quantity" class="control-label"></label>
-//        <input asp-for="MenuItemIngredient.Quantity" class="form-control" />
-//        <span asp-validation-for="MenuItemIngredient.Quantity" class="text-danger"></span>
-//    </div>
-//    <div class="form-group p-sm-4">
-//        <label asp-for="MenuItemIngredient.Ingredient" class="control-label"></label>
-//        <select asp-for="MenuItemIngredient.Ingredient" class="form-control" asp-items="@ViewBag.ingredients"></select>
-//        <span asp-validation-for="MenuItemIngredient.Ingredient" class="text-danger"></span>
-//    </div>
-//</div>
+function updateOrderTotal() {
+    let total = 0;
 
+    $("[name='OrderMenuItem']").each((index, el) => {
+        let price = parseFloat($(el).children("span[name='price']").first().text());
+        let quantity = $(el).children("input").first().val();
+        total += price * quantity;
+    });
+    $("#orderTotal").text(total.toFixed(2));
+}
 
-//<form asp-action="Index">
-//    <div id="formInsert">
+function updateQuantity(event) {
+    let input = event.target;
 
-//    </div>
-//    <button type="submit">Create Customers</button>
-//</form>
-//    <button type="button" id="addForm">Add Another Customer</button>
+    if (isNaN(input.value) || input.value <= 0) {
+        input.value = 1;
+    }
+    updateOrderTotal();
+}
 
+function removeItem(event) {
+    event.target.parentElement.remove();
+    updateOrderTotal();
+}
 
+function submitOrder() {
+    let total = $("#orderTotal").text();
+    var orderitems = [];
 
-//    <script>
-//        let itemNum = 0;
-//    $("#addForm").on('click', function () {
+    $("[name='OrderMenuItem']").each((index, el) => {
+        let quantity = $(el).children("input").first().val();
+        let menuItemId = $(el).attr("value");
 
-//            console.log("Clicked! Item Num: " + itemNum);
-//        $("#formInsert").append('<input type="text" id="z'+itemNum+'_Name" name="['+itemNum+'].Name" value>');
-//        itemNum++;
-//    });
-//</script>
+        orderitems.push({
+           quantity: quantity,
+           menuItemId: menuItemId,
+        });
+    });
 
+    var placedOrder = {
+        Total: total,
+        OrderedItems: orderitems
+    };
 
+    //$.post('/Owner/CreateOrder', { placedOrder: placedOrder }, () => alert("done"));
+
+    $.ajax({
+        type: "POST",
+        //dataType: "json",
+        //contentType: 'application/json',
+        url: "/Owner/CreateOrder",
+        data: {
+            placedOrder: placedOrder
+        },
+        success:() => alert("OOFF")
+    });
+}
 
 function addAnotherIngredient(obj) {
     var $obj = $(obj);
@@ -70,7 +98,7 @@ function addAnotherIngredient(obj) {
         "data-val-required": "THe Amount in Grams field is required.",
         "id": "MenuItemIngredient_Quantity",
         "name": "MenuItemIngredient_Quantity",
-        "value" : ""
+        "value": ""
     });
 
     var quantitySpan = $("<span>", {
@@ -86,9 +114,9 @@ function addAnotherIngredient(obj) {
     console.log(parentDiv);
     parentDiv.appendTo($("#recipeContainer"));
 
-   
+
     console.log($obj);
-    
+
     return false;
 
 }

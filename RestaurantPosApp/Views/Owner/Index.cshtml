@@ -11,11 +11,11 @@
             <ul class="nav nav-tabs" id="navTabs">
                 @foreach (var item in ViewBag.Categories)
                 {
-                   <li><a data-toggle="tab" class="mx-2" href="#@item.CategoryName" value="@item.MenuCategoryId">@item.CategoryName</a></li>
+                    <li><a data-toggle="tab" class="mx-2" href="#@item.CategoryName" value="@item.MenuCategoryId">@item.CategoryName</a></li>
                 }
 
 
-                <li class="active mx-2" ><a data-toggle="tab" href="#addCategory">Add Menu Category</a></li>
+                <li class="active mx-2"><a data-toggle="tab" href="#addCategory">Add Menu Category</a></li>
             </ul>
 
             <div class="tab-content">
@@ -32,10 +32,11 @@
         <div class="col-sm-4">
             <h2 class="text-center">Order Items</h2>
             <div class="container-fluid" id="orderBox"></div>
+            <h4 class="text-center" id="orderTotal"></h4>
+            <button type="button" class="btn btn-primary" id="submitOrder" onclick="submitOrder()">Complete Order</button>
         </div>
     </div>
 </div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

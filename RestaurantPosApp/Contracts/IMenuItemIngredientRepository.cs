@@ -16,5 +16,7 @@ namespace RestaurantPosApp.Contracts
         MenuItemIngredient GetMenuItemIngredient(int id);
         MenuItemIngredient GetMenuItemIngredientByIngredientId(int ingredientId);
         IQueryable<MenuItemIngredient> GetMenuItemIngredientsByMenuItemId(int menuItemId);
+        IEnumerable<Ingredient> GetIngredientsByMenuItemIds(List<int> menuItemIds);
+
     }
 }

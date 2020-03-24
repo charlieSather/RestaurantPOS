@@ -24,8 +24,12 @@ a {
   border-color: #1861ac;
 }
 #orderBox{
-    height: 100vh;
+    height: 75vh;
     border: 2px solid black;
+}
+#tab-content {
+    display: flex;
+    flex-direction: row;
 }
 
 /* Sticky footer styles
