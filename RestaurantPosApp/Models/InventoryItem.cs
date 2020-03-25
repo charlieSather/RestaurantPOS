@@ -20,7 +20,7 @@ namespace RestaurantPosApp.Models
         public decimal BulkPrice { get; set; }
 
         [Range(0, 10000)]
-        [Display(Name ="Inventory is considered low at this amount")]
+        [Display(Name ="Low inventory threshold")]
         public int LowerThreshold { get; set; }
         public bool IsLow { get; set; }
 

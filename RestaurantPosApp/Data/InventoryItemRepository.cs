@@ -19,14 +19,8 @@ namespace RestaurantPosApp.Data
         public void DeleteInventoryItem(InventoryItem inventoryItem) => Delete(inventoryItem);
         public void UpdateInventoryItem(InventoryItem inventoryItem) => Update(inventoryItem);
         public void AddRangeOfInventoryItems(IEnumerable<InventoryItem> inventoryItems) => AddRange(inventoryItems);
-
-        public void UpdateInventoryItems(List<InventoryItem> inventoryItems)
-        {
-            foreach (var inventoryItem in inventoryItems)
-            {
-                Update(inventoryItem);
-            }
-        }
+        public void UpdateRangeOfInventoryItems(IEnumerable<InventoryItem> inventoryItems) => UpdateRange(inventoryItems);
+        public int GetSumForIngredient(int ingredientId) => FindByCondition(x => x.IngredientId == ingredientId).Sum(x => x.AmountInGrams);
 
         public InventoryItem GetInventoryItem(int id) => FindByCondition(x => x.InventoryItemId == id).FirstOrDefault();
 
@@ -36,12 +30,8 @@ namespace RestaurantPosApp.Data
 
         public IQueryable<InventoryItem> GetInventoryItemsByIngredientId(int ingredientId) => FindByCondition(x => x.IngredientId == ingredientId);
 
-        public IQueryable<InventoryItem> GetInventoryItemsByIngredientList(List<int> ingredientIds) => 
-            FindAll()
-                .Join(ingredientIds, inventoryItem => inventoryItem.IngredientId, ingredientId => ingredientId, (inventoryItem, ingredientId) => inventoryItem)
-                .Include(i => i.Ingredient);
-
-        //public IQueryable<InventoryItem> GetInventoryItemsByIngredientList(List<int> ingredientIds) => FindByCondition(x => ingredientIds.Contains(x.IngredientId));
-
+        public IEnumerable<InventoryItem> GetInventoryItemsByIngredientList(List<int> ingredientIds) =>
+                ingredientIds.Join(FindAll().Include(x => x.Ingredient), ingredientId => ingredientId, inventoryItem => inventoryItem.IngredientId, (ingredientId, inventoryItem) => inventoryItem);
+        //public IQueryable<InventoryItem> GetInventoryItemsByIngredientList(List<int> ingredientIds) => FindByCondition(x => ingredientIds.Contains(x.IngredientId));S
     }
 }

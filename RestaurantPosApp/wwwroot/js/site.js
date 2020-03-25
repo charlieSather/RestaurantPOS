@@ -81,8 +81,23 @@ function submitOrder() {
         data: {
             placedOrder: placedOrder
         },
-        success:() => alert("OOFF")
+        success: (data) => {
+            if (data.errorMessage != undefined) {
+                alert(data.errorMessage, "SuccessERRRR");
+            }
+            else {
+                alert("Order has been placed!");
+                clearOrderWindow();
+            }
+            console.log(data);
+        },
+        error: (data) => alert(data, "LOL")
     });
+}
+
+function clearOrderWindow() {
+    $("#orderBox").empty();
+    updateOrderTotal();
 }
 
 function addAnotherIngredient(obj) {
@@ -108,29 +123,16 @@ function addAnotherIngredient(obj) {
     });
 
     quantityDiv.append(quantityLabel, quantityInput, quantitySpan);
-
     parentDiv.append(quantityDiv);
 
     console.log(parentDiv);
     parentDiv.appendTo($("#recipeContainer"));
-
 
     console.log($obj);
 
     return false;
 
 }
-
-
-//    <script>
-//        let itemNum = 0;
-//    $("#addForm").on('click', function () {
-
-//            console.log("Clicked! Item Num: " + itemNum);
-//        $("#formInsert").append('<input type="text" id="z'+itemNum+'_Name" name="['+itemNum+'].Name" value>');
-//        itemNum++;
-//    });
-//</script>
 
 function setupIngredientHandler() {
 

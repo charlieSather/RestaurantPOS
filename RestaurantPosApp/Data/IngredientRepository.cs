@@ -24,17 +24,7 @@ namespace RestaurantPosApp.Data
         public IQueryable<Ingredient> GetIngredients() => FindAll();
         public IEnumerable<Ingredient> GetIngredients(IEnumerable<int> IngredientIds)
         {
-            var ingredients = FindAll();
-
             return IngredientIds.Join(FindAll(), id => id, ingredient => ingredient.IngredientId, (id, ingredient) => ingredient);
-
-            //var query = from id in IngredientIds
-            //            join item in ingredients on id equals item.IngredientId
-            //            select item;
-
-            //return query;
-
-            //return ingredients.Join(IngredientIds, ingredient => ingredient.IngredientId, ingredientId => ingredientId, (ingredient, ingredientId) => ingredient);
         }
 
     }

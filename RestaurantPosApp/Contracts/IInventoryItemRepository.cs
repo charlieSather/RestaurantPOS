@@ -11,12 +11,13 @@ namespace RestaurantPosApp.Contracts
         void CreateInventoryItem(InventoryItem inventoryItem);
         void AddRangeOfInventoryItems(IEnumerable<InventoryItem> inventoryItems);
         void UpdateInventoryItem(InventoryItem inventoryItem);
-        void UpdateInventoryItems(List<InventoryItem> inventoryItems);
+        void UpdateRangeOfInventoryItems(IEnumerable<InventoryItem> inventoryItems);
         void DeleteInventoryItem(InventoryItem inventoryItem);
+        int GetSumForIngredient(int ingredientId);
         InventoryItem GetInventoryItem(int id);
         InventoryItem GetInventoryItemByIngredientId(int ingredientId);
         IQueryable<InventoryItem> GetInventoryItems();
         IQueryable<InventoryItem> GetInventoryItemsByIngredientId(int ingredientId);
-        IQueryable<InventoryItem> GetInventoryItemsByIngredientList(List<int> ingredientIds);
+        IEnumerable<InventoryItem> GetInventoryItemsByIngredientList(List<int> ingredientIds);
     }
 }

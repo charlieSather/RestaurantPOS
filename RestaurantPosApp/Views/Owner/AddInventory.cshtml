@@ -14,24 +14,24 @@
     <div class="row">
         <div class="form-row w-100 my-2">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-sm-3" id="selectDiv">
+                <label asp-for="@Model[0].Ingredient" class="control-label"></label>
+                <select asp-for="@Model[0].IngredientId" class="form-control" asp-items="@ViewBag.Ingredients"></select>
+            </div>
             <div class="col-sm-3">
                 <label asp-for="@Model[0].AmountInGrams" class="control-label"></label>
                 <input asp-for="@Model[0].AmountInGrams" class="form-control" />
                 <span asp-validation-for="@Model[0].AmountInGrams" class="text-danger"></span>
             </div>
             @*<div class="col-sm-3">
-                <label asp-for="@Model[0].BulkPrice" class="control-label"></label>
-                <input asp-for="@Model[0].BulkPrice" class="form-control" />
-                <span asp-validation-for="@Model[0].BulkPrice" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="@Model[0].BulkPrice" class="control-label"></label>
+                    <input asp-for="@Model[0].BulkPrice" class="form-control" />
+                    <span asp-validation-for="@Model[0].BulkPrice" class="text-danger"></span>
+                </div>*@
             <div class="col-sm-3">
                 <label asp-for="@Model[0].LowerThreshold" class="control-label"></label>
                 <input asp-for="@Model[0].LowerThreshold" class="form-control" />
                 <span asp-validation-for="@Model[0].LowerThreshold" class="text-danger"></span>
-            </div>
-            <div class="col-sm-3" id="selectDiv">
-                <label asp-for="@Model[0].Ingredient" class="control-label"></label>
-                <select asp-for="@Model[0].IngredientId" class="form-control" asp-items="@ViewBag.Ingredients"></select>
             </div>
 
         </div>
@@ -41,23 +41,23 @@
             {
                 <div class="form-row w-100 my-2">
                     <div class="col-sm-3">
+                        <label asp-for="@Model[i].IngredientId" class="control-label"></label>
+                        <select asp-for="@Model[i].IngredientId" class="form-control" asp-items="@ViewBag.Ingredients"></select>
+                    </div>
+                    <div class="col-sm-3">
                         <label asp-for="@Model[i].AmountInGrams" class="control-label"></label>
                         <input asp-for="@Model[i].AmountInGrams" class="form-control" />
                         <span asp-validation-for="@Model[i].AmountInGrams" class="text-danger"></span>
                     </div>
                     @*<div class="col-sm-3">
-                        <label asp-for="@Model[i].BulkPrice" class="control-label"></label>
-                        <input asp-for="@Model[i].BulkPrice" class="form-control" />
-                        <span asp-validation-for="@Model[i].BulkPrice" class="text-danger"></span>
-                    </div>*@
+                            <label asp-for="@Model[i].BulkPrice" class="control-label"></label>
+                            <input asp-for="@Model[i].BulkPrice" class="form-control" />
+                            <span asp-validation-for="@Model[i].BulkPrice" class="text-danger"></span>
+                        </div>*@
                     <div class="col-sm-3">
                         <label asp-for="@Model[i].LowerThreshold" class="control-label"></label>
                         <input asp-for="@Model[i].LowerThreshold" class="form-control" />
                         <span asp-validation-for="@Model[i].LowerThreshold" class="text-danger"></span>
-                    </div>
-                    <div class="col-sm-3">
-                        <label asp-for="@Model[i].IngredientId" class="control-label"></label>
-                        <select asp-for="@Model[i].IngredientId" class="form-control" asp-items="@ViewBag.Ingredients"></select>
                     </div>
                 </div>
 
