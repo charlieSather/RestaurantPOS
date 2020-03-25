@@ -28,7 +28,7 @@ namespace RestaurantPosApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            await _emailService.EmailAsync(new Owner { EmailAddress = "charliesather18@gmail.com", Name = "Charlie Sather"}, "<h1>Hello!</h1>");
+            //await _emailService.EmailAsync(new Owner { EmailAddress = "charliesather18@gmail.com", Name = "Charlie Sather"}, "<h1>Hello!</h1>");
 
             ViewBag.Categories = await Task.Run(() => _repo.MenuCategory.GetMenuCategories());
             return View();
@@ -188,6 +188,8 @@ namespace RestaurantPosApp.Controllers
             _repo.InventoryItem.UpdateRangeOfInventoryItems(inventoryItemsFromDb);
             _repo.Save();
         }
+
+        public IActionResult Statistics() => View();
 
         //public bool CanMakeMenuItem(MenuItem menuItem, int quantity)
         //{

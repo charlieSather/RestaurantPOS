@@ -26,7 +26,7 @@ namespace RestaurantPosApp.Data
 
         public InventoryItem GetInventoryItemByIngredientId(int ingredientId) => FindByCondition(x => x.IngredientId == ingredientId).FirstOrDefault();
 
-        public IQueryable<InventoryItem> GetInventoryItems() => FindAll();
+        public IQueryable<InventoryItem> GetInventoryItems() => FindAll().Include(i => i.Ingredient);
 
         public IQueryable<InventoryItem> GetInventoryItemsByIngredientId(int ingredientId) => FindByCondition(x => x.IngredientId == ingredientId);
 

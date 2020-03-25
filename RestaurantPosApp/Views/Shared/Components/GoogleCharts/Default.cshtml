@@ -1,0 +1,45 @@
+﻿@model RestaurantPosApp.Models.StatisticsViewModel
+
+
+<div id="columnchart_material" style="width: 800px; height: 500px;"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var matrix = [];
+        matrix.push(['Ingredient','@Html.DisplayNameFor(Model => Model.Inventory[0].AmountInGrams)','@Html.DisplayNameFor(Model => Model.Inventory[0].BulkPrice)']);
+
+        @foreach (var item in Model.Inventory)
+        {
+            <text>
+                matrix.push(['@item.Ingredient.Name', @item.AmountInGrams,@item.BulkPrice]);
+            </text>
+        }
+        var data = google.visualization.arrayToDataTable(matrix);
+
+        var options = {
+            width: 900,
+            chart: {
+                title: '@Html.DisplayNameFor(model => model.Inventory) Items',
+                subtitle: 'amount on the left, bulk cost on the right'
+            },
+            series: {
+                0: { axis: 'amount' }, // Bind series 0 to an axis named 'amount'.
+                1: { axis: 'cost' } // Bind series 1 to an axis named 'cost'.
+            },
+            axes: {
+                y: {
+                  amount: {label: 'Amount in Grams'}, // Left y-axis.
+                  cost: {side: 'right', label: 'Bulk Cost'} // Right y-axis.
+                }
+            }
+        };
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+</script>
+
+
