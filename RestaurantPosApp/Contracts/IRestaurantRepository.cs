@@ -11,6 +11,6 @@ namespace RestaurantPosApp.Contracts
         void CreateRestaurant(Restaurant restaurant);
         void UpdateRestaurant(Restaurant restaurant);
         void DeleteRestaurant(Restaurant restaurant);
-        Restaurant GetRestaurantByOwenerId(string ownerId);
+        Restaurant GetRestaurantByOwenerId(int ownerId);
     }
 }

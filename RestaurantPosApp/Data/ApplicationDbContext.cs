@@ -43,6 +43,8 @@ namespace RestaurantPosApp.Data
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Owner> Owners { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<ShoppingList> ShoppingLists { get; set; }
+        public DbSet<ShoppingListIngredient> ShoppingListIngredients { get; set; }
 
     }
 }

@@ -13,7 +13,7 @@ namespace RestaurantPosApp.Models
         public int RestaurantId { get; set; }
 
         [ForeignKey("Owner")]
-        public string OwnerId { get; set; }
+        public int OwnerId { get; set; }
         public Owner Owner { get; set; }
 
 

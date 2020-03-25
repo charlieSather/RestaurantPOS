@@ -15,6 +15,8 @@ namespace RestaurantPosApp.Contracts
         IOrderMenuItemRepository OrderMenuItem { get; }
         IPlacedOrderRepository PlacedOrder { get; }
         IRestaurantRepository Restaurant { get; }
+        IShoppingListRepository ShoppingList { get; }
+        IShoppingListIngredientRepository ShoppingListIngredient { get; }
         void Save();
     }
 }

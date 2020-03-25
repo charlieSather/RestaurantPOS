@@ -16,6 +16,6 @@ namespace RestaurantPosApp.Data
         public void CreateRestaurant(Restaurant restaurant) => Create(restaurant);
         public void DeleteRestaurant(Restaurant restaurant) => Delete(restaurant);
         public void UpdateRestaurant(Restaurant restaurant) => Update(restaurant);
-        public Restaurant GetRestaurantByOwenerId(string ownerId) => FindByCondition(x => x.OwnerId == ownerId).FirstOrDefault();
+        public Restaurant GetRestaurantByOwenerId(int ownerId) => FindByCondition(x => x.OwnerId == ownerId).FirstOrDefault();
     }
 }

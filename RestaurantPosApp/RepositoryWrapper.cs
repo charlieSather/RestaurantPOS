@@ -18,6 +18,8 @@ namespace RestaurantPosApp
         private IOrderMenuItemRepository _orderMenuItem;
         private IPlacedOrderRepository _placedOrder;
         private IRestaurantRepository _restaurant;
+        private IShoppingListRepository _shoppingList;
+        private IShoppingListIngredientRepository _shoppingListIngredient;
 
         public RepositoryWrapper(ApplicationDbContext context)
         {
@@ -112,6 +114,29 @@ namespace RestaurantPosApp
                 return _restaurant;
             }
         }
+        public IShoppingListRepository ShoppingList
+        {
+            get
+            {
+                if(_shoppingList is null)
+                {
+                    _shoppingList = new ShoppingListRepository(_context);
+                }
+                return _shoppingList;
+            }
+        }
+        public IShoppingListIngredientRepository ShoppingListIngredient
+        {
+            get
+            {
+                if(_shoppingListIngredient is null)
+                {
+                    _shoppingListIngredient = new ShoppingListIngredientRepository(_context);
+                }
+                return _shoppingListIngredient;
+            }
+        }
+
         public void Save()
         {
             _context.SaveChanges();

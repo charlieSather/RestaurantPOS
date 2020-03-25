@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace RestaurantPosApp.Models
 {
-    public class IngredientShoppingList
+    public class ShoppingListIngredient
     {
         [Key]
-        public int IngredientShoppingListId { get; set; }
+        public int ShoppingListIngredientId { get; set; }
 
         [Display(Name ="Amount in Grams")]
         public int AmountInGrams { get; set; }

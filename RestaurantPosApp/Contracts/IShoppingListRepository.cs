@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantPosApp.Contracts
 {
-    public interface IShoppingListRepository
+    public interface IShoppingListRepository : IRepositoryBase<ShoppingList>
     {
         void CreateShoppingList(ShoppingList shoppingList);
         void UpdateShoppingList(ShoppingList shoppingList);

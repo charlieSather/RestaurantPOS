@@ -13,7 +13,7 @@ namespace RestaurantPosApp.Models
         [Key]
         public int ShoppingListId { get; set; }
         public bool IsCompleted { get; set; }
-        public List<IngredientShoppingList> ShoppingItems { get; set; }
+        public List<ShoppingListIngredient> ShoppingItems { get; set; }
 
 
         [ForeignKey("Owner")]

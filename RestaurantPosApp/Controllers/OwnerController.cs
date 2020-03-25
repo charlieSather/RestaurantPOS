@@ -251,15 +251,22 @@ namespace RestaurantPosApp.Controllers
         {
             var shoppingList = new ShoppingList();
             //shoppingList.OwnerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            shoppingList.ShoppingItems = new List<IngredientShoppingList>();
+            shoppingList.ShoppingItems = new List<ShoppingListIngredient>();
             
 
             var lowInventoryItems = _repo.InventoryItem.GetLowInventoryItems().ToList();
             var htmlString = "<ul>";
             foreach (var item in lowInventoryItems)
             {
-                shoppingList.ShoppingItems.Add(new IngredientShoppingList { IngredientId = item.IngredientId, })
                 var recommendedAmount = item.LowerThreshold * 10;
+                shoppingList.ShoppingItems.Add(
+                    new ShoppingListIngredient 
+                    { 
+                        IngredientId = item.IngredientId, 
+                        AmountInGrams = recommendedAmount, 
+                        ShoppingListId = shoppingList.ShoppingListId 
+                    }
+                );
                 htmlString += $"<li>{item.Ingredient.Name}: {recommendedAmount} grams.</li>";
             }
             htmlString += "</ul>";
