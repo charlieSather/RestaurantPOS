@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -18,7 +19,6 @@ namespace RestaurantPosApp.Controllers
         private readonly IRepositoryWrapper _repo;
         private readonly IEmailService _emailService;
 
-
         public OwnerController(ILogger<OwnerController> logger, IRepositoryWrapper repo, IEmailService emailService)
         {
             _logger = logger;
@@ -28,8 +28,6 @@ namespace RestaurantPosApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //await _emailService.EmailAsync(new Owner { EmailAddress = "charliesather18@gmail.com", Name = "Charlie Sather"}, "<h1>Hello!</h1>");
-
             ViewBag.Categories = await Task.Run(() => _repo.MenuCategory.GetMenuCategories());
             return View();
         }
@@ -61,8 +59,6 @@ namespace RestaurantPosApp.Controllers
 
             ViewBag.MenuCategories = new SelectList(_repo.MenuCategory.GetMenuCategories(), "MenuCategoryId", "CategoryName");
             ViewBag.Ingredients = new SelectList(_repo.Ingredient.GetIngredients(), "IngredientId", "Name");
-
-
             return View(model);
         }
 
@@ -191,14 +187,6 @@ namespace RestaurantPosApp.Controllers
 
         public IActionResult Statistics() => View();
 
-        //public bool CanMakeMenuItem(MenuItem menuItem, int quantity)
-        //{
-        //    var recipeDictionary = menuItem.Recipe.ToDictionary(x => x.Quantity);
-
-        //    return true;
-        //}
-
-
         public IActionResult AddIngredients() => View();
 
         [HttpPost]
@@ -258,6 +246,31 @@ namespace RestaurantPosApp.Controllers
         }
         public bool InventoryItemIsLow(InventoryItem inventoryItem) => inventoryItem.AmountInGrams <= inventoryItem.LowerThreshold;
 
+        [Authorize(Roles ="Owner")]
+        public async Task<IActionResult> GenerateShoppingList()
+        {
+            var shoppingList = new ShoppingList();
+            //shoppingList.OwnerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            shoppingList.ShoppingItems = new List<IngredientShoppingList>();
+            
+
+            var lowInventoryItems = _repo.InventoryItem.GetLowInventoryItems().ToList();
+            var htmlString = "<ul>";
+            foreach (var item in lowInventoryItems)
+            {
+                shoppingList.ShoppingItems.Add(new IngredientShoppingList { IngredientId = item.IngredientId, })
+                var recommendedAmount = item.LowerThreshold * 10;
+                htmlString += $"<li>{item.Ingredient.Name}: {recommendedAmount} grams.</li>";
+            }
+            htmlString += "</ul>";
+            
+            //await _emailService.EmailAsync(new Owner { EmailAddress = "", Name = "CSather"}, htmlString);
+            return View("Statistics");
+        }
+        public void InputShoppingList(int id)
+        {
+            
+        }
         public IActionResult Privacy()
         {
             return View();

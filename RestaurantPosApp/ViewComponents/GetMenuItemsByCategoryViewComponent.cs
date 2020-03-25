@@ -22,8 +22,6 @@ namespace RestaurantPosApp.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync(int categoryId)
         {
-            //string MyView = "Default";
-
             var items = await GetItemsAsync(categoryId);
             return View("Default", items);
         }

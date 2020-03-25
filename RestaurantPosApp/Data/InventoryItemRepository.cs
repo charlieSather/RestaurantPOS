@@ -32,6 +32,6 @@ namespace RestaurantPosApp.Data
 
         public IEnumerable<InventoryItem> GetInventoryItemsByIngredientList(List<int> ingredientIds) =>
                 ingredientIds.Join(FindAll().Include(x => x.Ingredient), ingredientId => ingredientId, inventoryItem => inventoryItem.IngredientId, (ingredientId, inventoryItem) => inventoryItem);
-        //public IQueryable<InventoryItem> GetInventoryItemsByIngredientList(List<int> ingredientIds) => FindByCondition(x => ingredientIds.Contains(x.IngredientId));S
+        public IEnumerable<InventoryItem> GetLowInventoryItems() => FindByCondition(x => x.IsLow == true).Include(i => i.Ingredient);
     }
 }

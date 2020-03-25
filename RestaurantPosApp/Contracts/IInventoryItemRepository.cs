@@ -19,5 +19,6 @@ namespace RestaurantPosApp.Contracts
         IQueryable<InventoryItem> GetInventoryItems();
         IQueryable<InventoryItem> GetInventoryItemsByIngredientId(int ingredientId);
         IEnumerable<InventoryItem> GetInventoryItemsByIngredientList(List<int> ingredientIds);
+        IEnumerable<InventoryItem> GetLowInventoryItems();
     }
 }
