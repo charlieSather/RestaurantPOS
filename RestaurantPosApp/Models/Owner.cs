@@ -12,18 +12,24 @@ namespace RestaurantPosApp.Models
     {
         [Key]
         public int OwnerId { get; set; }
+
+        [Required]
         public string Name { get; set; }
+
+        [RegularExpression(@"^[0-9]{4}$", ErrorMessage = "Pin Code must be a 4-digit Code")]
+        [Required]
+        [Display(Name = "Pin Code")]
         public int PinCode { get; set; }
 
         [DataType(DataType.PhoneNumber)]
+        [Required]
         public string PhoneNumber { get; set; }
 
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
 
-
         [ForeignKey("IdentityUser")]
-        public string userId { get; set; }
+        public string UserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
     }
 }

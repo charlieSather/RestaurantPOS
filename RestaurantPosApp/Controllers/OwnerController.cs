@@ -1,36 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
 using RestaurantPosApp.Contracts;
 using RestaurantPosApp.Models;
 
 namespace RestaurantPosApp.Controllers
 {
+    [Authorize(Roles = "Owner")]
     public class OwnerController : Controller
     {
-        private readonly ILogger<OwnerController> _logger;
         private readonly IRepositoryWrapper _repo;
         private readonly IEmailService _emailService;
-
-        public OwnerController(ILogger<OwnerController> logger, IRepositoryWrapper repo, IEmailService emailService)
+        public OwnerController(IRepositoryWrapper repo, IEmailService emailService)
         {
-            _logger = logger;
             _repo = repo;
             _emailService = emailService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            ViewBag.Categories = await Task.Run(() => _repo.MenuCategory.GetMenuCategories());
-            return View();
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var owner = _repo.Owner.GetOwner(userId);
+
+            if(owner != null)
+            {
+                return RedirectToAction("Index", "Restaurant");
+            }
+            return RedirectToAction(nameof(Create));
         }
+
+        public IActionResult Create() => View();
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Owner owner)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                owner.UserId = userId;
+                _repo.Owner.CreateOwner(owner);
+                _repo.Save();
+
+                //system will be limited to a single restuarant and owner for now
+                return RedirectToAction("Create", "Restaurant");
+            }
+            else
+            {
+                return View(owner);
+            }
+        }
+
         public IActionResult CreateMenuCategory() => View();
 
         [HttpPost]
@@ -54,6 +79,10 @@ namespace RestaurantPosApp.Controllers
 
             if (id != 0)
             {
+                var menuItem = _repo.MenuItem.GetMenuItem(id);
+                model.MenuItem = menuItem;
+                model.Recipe = menuItem.Recipe;
+                return View(model);
                 //build model from Db
             }
 
@@ -100,89 +129,7 @@ namespace RestaurantPosApp.Controllers
         }
         public decimal CalculateCost(int quantity, int unit, decimal pricePerUnit)
         {
-            return ((decimal) quantity / unit) * pricePerUnit;
-        }
-
-        [HttpPost]
-        public IActionResult CreateOrder(PlacedOrder placedOrder)
-        {
-            if (ModelState.IsValid)
-            {
-                var menuItems = _repo.MenuItem.GetMenuItemsByIds(placedOrder.OrderedItems.Select(x => x.MenuItemId).Distinct()).ToList();
-                var orderResult = InventoryCanMakeOrder(placedOrder, menuItems);
-                if (orderResult.Item1)
-                {
-                    placedOrder.OrderedTimestamp = DateTime.Now;
-                    //placedOrder.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                    UpdateInventory(placedOrder, orderResult.Item3);
-                    _repo.PlacedOrder.CreateOrder(placedOrder);
-                    _repo.Save();
-                }
-                else
-                {
-                    var menuItem = menuItems.Find(x => x.Recipe.Exists(x => x.IngredientId == orderResult.Item2));
-                    var menuItemingredient = menuItem.Recipe.Find(x => x.IngredientId == orderResult.Item2);
-                    var errorMessage = $"Sorry, we Can't make {menuItem.Name} as we have no more {menuItemingredient.Ingredient.Name}";
-                    return Json(new { ErrorMessage = errorMessage });
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return Json(placedOrder);
-        }
-
-        public (bool, int?, Dictionary<int, int>) InventoryCanMakeOrder(PlacedOrder placedOrder, IEnumerable<MenuItem> menuItems)
-        {
-            // (can we make it?, ingredientId we're out of, ingredientSums dictionary)
-            (bool, int?, Dictionary<int, int>) canMake = (true, null, new Dictionary<int, int>());
-            var groupedMenuItems = placedOrder.OrderedItems.GroupBy(x => x.MenuItemId).ToList();
-
-            //Key is ingredientId 
-            //Value is total amount needed of that ingredient to make the order 
-            var ingredientSums = menuItems.SelectMany(x => x.Recipe, (x, ingredient) => ingredient.IngredientId).Distinct().ToDictionary(x => x, x => 0);
-            var ingredientSumsFromInventory = new Dictionary<int, int>(ingredientSums);
-
-            canMake.Item3 = ingredientSums;
-            //build up amount of ingredients in inventory
-            ingredientSumsFromInventory.Keys.ToList().ForEach(key => ingredientSumsFromInventory[key] = _repo.InventoryItem.GetSumForIngredient(key));
-
-            // Big-O scary
-            foreach (var items in groupedMenuItems)
-            {
-                foreach (var item in items)
-                {
-                    var menuItem = menuItems.Single(x => x.MenuItemId == item.MenuItemId);
-                    foreach (var ingredient in menuItem.Recipe)
-                    {
-                        ingredientSums[ingredient.IngredientId] += ingredient.Quantity * item.Quantity;
-                    };
-                }
-            }
-
-
-            foreach (var key in ingredientSums.Keys)
-            {
-                if (ingredientSums[key] > ingredientSumsFromInventory[key])
-                {
-                    canMake.Item1 = false;
-                    canMake.Item2 = key;
-                    break;
-                }
-            }
-
-            return canMake;
-        }
-        public void UpdateInventory(PlacedOrder placedOrder, Dictionary<int, int> ingredientSums)
-        {
-            var inventoryItemsFromDb = _repo.InventoryItem.GetInventoryItemsByIngredientList(ingredientSums.Keys.ToList()).ToList();
-            foreach (var inventoryItem in inventoryItemsFromDb)
-            {
-                var amountNeeded = ingredientSums[inventoryItem.IngredientId];
-                inventoryItem.BulkPrice -= CalculateCost(amountNeeded, inventoryItem.Ingredient.BaseUnitOfWeight,inventoryItem.Ingredient.PricePerUnit);
-                inventoryItem.AmountInGrams -= amountNeeded;
-                inventoryItem.IsLow = InventoryItemIsLow(inventoryItem);
-            }
-            _repo.InventoryItem.UpdateRangeOfInventoryItems(inventoryItemsFromDb);
-            _repo.Save();
+            return ((decimal)quantity / unit) * pricePerUnit;
         }
 
         public IActionResult Statistics() => View();
@@ -244,15 +191,15 @@ namespace RestaurantPosApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
         public bool InventoryItemIsLow(InventoryItem inventoryItem) => inventoryItem.AmountInGrams <= inventoryItem.LowerThreshold;
 
-        [Authorize(Roles ="Owner")]
         public async Task<IActionResult> GenerateShoppingList()
         {
             var shoppingList = new ShoppingList();
             //shoppingList.OwnerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             shoppingList.ShoppingItems = new List<ShoppingListIngredient>();
-            
+
 
             var lowInventoryItems = _repo.InventoryItem.GetLowInventoryItems().ToList();
             var htmlString = "<ul>";
@@ -260,33 +207,24 @@ namespace RestaurantPosApp.Controllers
             {
                 var recommendedAmount = item.LowerThreshold * 10;
                 shoppingList.ShoppingItems.Add(
-                    new ShoppingListIngredient 
-                    { 
-                        IngredientId = item.IngredientId, 
-                        AmountInGrams = recommendedAmount, 
-                        ShoppingListId = shoppingList.ShoppingListId 
+                    new ShoppingListIngredient
+                    {
+                        IngredientId = item.IngredientId,
+                        AmountInGrams = recommendedAmount,
+                        ShoppingListId = shoppingList.ShoppingListId
                     }
                 );
                 htmlString += $"<li>{item.Ingredient.Name}: {recommendedAmount} grams.</li>";
             }
             htmlString += "</ul>";
-            
+
             //await _emailService.EmailAsync(new Owner { EmailAddress = "", Name = "CSather"}, htmlString);
             return View("Statistics");
         }
         public void InputShoppingList(int id)
         {
-            
-        }
-        public IActionResult Privacy()
-        {
-            return View();
+
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

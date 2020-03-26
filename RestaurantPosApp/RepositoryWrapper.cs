@@ -20,6 +20,8 @@ namespace RestaurantPosApp
         private IRestaurantRepository _restaurant;
         private IShoppingListRepository _shoppingList;
         private IShoppingListIngredientRepository _shoppingListIngredient;
+        private IEmployeeRepository _employee;
+        private IOwnerRepository _owner;
 
         public RepositoryWrapper(ApplicationDbContext context)
         {
@@ -136,7 +138,28 @@ namespace RestaurantPosApp
                 return _shoppingListIngredient;
             }
         }
-
+        public IOwnerRepository Owner
+        {
+            get
+            {
+                if(_owner is null)
+                {
+                    _owner = new OwnerRepository(_context);
+                }
+                return _owner;
+            }
+        }
+        public IEmployeeRepository Employee
+        {
+            get
+            {
+                if(_employee is null)
+                {
+                    _employee = new EmployeeRepository(_context);
+                }
+                return _employee;
+            }
+        }
         public void Save()
         {
             _context.SaveChanges();

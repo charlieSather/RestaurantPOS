@@ -112,6 +112,16 @@ namespace RestaurantPosApp.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
+
+                        if(Input.Role == "Owner")
+                        {
+                            return RedirectToAction("Index", "Owner");
+                        }
+
+                        if(Input.Role == "Employee")
+                        {
+                            return RedirectToAction("Index", "Employee");
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -122,6 +132,7 @@ namespace RestaurantPosApp.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            Roles = new SelectList(_roleManager.Roles, "Name", "Name");
             return Page();
         }
     }

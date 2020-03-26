@@ -12,6 +12,8 @@ namespace RestaurantPosApp.Models
     {
         [Key]
         public int EmployeeId { get; set; }
+        
+        [Required]
         public string Name { get; set; }
 
         [RegularExpression(@"^[0-9]{4}$", ErrorMessage ="Pin Code must be a 4-digit Code")]
@@ -20,7 +22,7 @@ namespace RestaurantPosApp.Models
         public int PinCode { get; set; }
 
         [ForeignKey("IdentityUser")]
-        public string userId { get; set; }
+        public string UserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
     }
 }

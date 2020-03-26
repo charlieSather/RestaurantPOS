@@ -4,7 +4,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Statistics</h1>
-<a asp-action="GenerateShoppingList">Generate Shopping List</a>
-@await Component.InvokeAsync("GoogleCharts")
+<div class="container">
+    <div class="row d-flex-row justify-content-between align-items-center">
+        <h1>Statistics</h1>
+        <a asp-action="GenerateShoppingList" class="btn btn-primary">Generate Shopping List</a>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-tabs" id="navTabs">
+                <li class="nav-item">
+                    <a class="active nav-link active" data-toggle="tab" href="#inventory">Inventory</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#sales">Sales</a>
+                </li>
+            </ul>
+
+            <div class="tab-content my-4 d-flex justify-content-center">
+                <div class="tab-pane fade in active show" id="inventory">
+                    @await Component.InvokeAsync("GoogleCharts")
+                </div>
+                <div class="tab-pane fade in" id="sales">
+                    <div class="form-inline justify-content-between">
+                        <input type="date" class="form-control mx-1">
+                        <input type="date" class="form-control mx-1">
+                        <button type="button" class="btn btn-primary mx-1" id="filter-button">Filter Dates</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 

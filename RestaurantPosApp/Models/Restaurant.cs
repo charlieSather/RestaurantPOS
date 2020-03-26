@@ -16,8 +16,10 @@ namespace RestaurantPosApp.Models
         public int OwnerId { get; set; }
         public Owner Owner { get; set; }
 
-
+        [Display(Name="Restaurant Name")]
+        [Required]
         public string Name { get; set; }
+
         public string StreetAddress { get; set; }
         public string City { get; set; }
         public string State { get; set; }

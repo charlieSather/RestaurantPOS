@@ -17,6 +17,9 @@ namespace RestaurantPosApp.Contracts
         IRestaurantRepository Restaurant { get; }
         IShoppingListRepository ShoppingList { get; }
         IShoppingListIngredientRepository ShoppingListIngredient { get; }
+        IEmployeeRepository Employee { get; }
+        IOwnerRepository Owner { get; }
+
         void Save();
     }
 }

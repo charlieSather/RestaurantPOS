@@ -11,10 +11,8 @@ namespace RestaurantPosApp.Models
     public class MenuItemViewModel
     {
         public MenuItem MenuItem { get; set; }
-        public MenuItemIngredient MenuItemIngredient { get; set; }
+        //public MenuItemIngredient MenuItemIngredient { get; set; }
         public List<MenuItemIngredient> Recipe { get; set; }
-        public SelectList MenuCategories { get; set; }
-        public SelectList Ingredients { get; set; }
 
     }
 }

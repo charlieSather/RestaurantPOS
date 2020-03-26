@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,12 +10,13 @@
     <title>@ViewData["Title"] - Restaurant Pos App</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Owner" asp-action="Index">RestaurantPosApp</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Restaurant" asp-action="Index">RestaurantPosApp</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,20 +25,42 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Index">Restaurant</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="AddOrEditMenuItem">Add Menu Item</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="AddInventory">Add Inventory</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="AddIngredients">Add Ingredients</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Statistics">Statistics</a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            @if (User.IsInRole("Owner"))
+                            {
+                                @*<li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="AddOrEditMenuItem">Add Menu Item</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="AddInventory">Add Inventory</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="AddIngredients">Add Ingredients</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Statistics">Statistics</a>
+                                    </li>*@
+
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="dropdown-item text-dark" asp-controller="Owner" asp-action="CreateMenuCategory">Add Menu Category</a>
+                                        <a class="dropdown-item text-dark" asp-controller="Owner" asp-action="AddOrEditMenuItem">Add Menu Items</a>
+                                        <a class="dropdown-item text-dark" asp-controller="Owner" asp-action="AddInventory">Add Inventory</a>
+                                        <a class="dropdown-item text-dark" asp-controller="Owner" asp-action="AddIngredients">Add Ingredients</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Statistics">Statistics</a>
+                                </li>
+                            }
+
+                        }
+
                     </ul>
                 </div>
             </div>
@@ -47,7 +74,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - RestaurantPosApp - <a asp-area="" asp-controller="Owner" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - RestaurantPosApp - <a asp-area="" asp-controller="Restaurant" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

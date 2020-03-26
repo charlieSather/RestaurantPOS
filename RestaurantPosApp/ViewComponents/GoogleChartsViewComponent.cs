@@ -19,7 +19,7 @@ namespace RestaurantPosApp.ViewComponents
         {
             return Task.Run(() => _repo.InventoryItem.GetInventoryItems().ToList());
         }
-        public async Task<IViewComponentResult> InvokeAsync(int categoryId)
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var inventory = await GetItemsAsync();
             return View("Default", new StatisticsViewModel { Inventory = inventory });

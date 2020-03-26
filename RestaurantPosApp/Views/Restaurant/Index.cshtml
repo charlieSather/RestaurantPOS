@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Restaurant Index";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8">
+
+            <ul class="nav nav-tabs" id="navTabs">
+                @for (int i = 0; i < ViewBag.Categories.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        <li class="nav-item">
+                            <a data-toggle="tab" class="active nav-link active mx-2" href="#@ViewBag.Categories[i].CategoryName" value="@ViewBag.Categories[i].MenuCategoryId">
+                                @ViewBag.Categories[i].CategoryName
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a data-toggle="tab" class="nav-link mx-2" href="#@ViewBag.Categories[i].CategoryName" value="@ViewBag.Categories[i].MenuCategoryId">
+                                @ViewBag.Categories[i].CategoryName
+                            </a>
+                        </li>
+                    }
+                }
+                @*@foreach (var item in ViewBag.Categories)
+                    {
+                        <li><a data-toggle="tab" class="mx-2" href="#@item.CategoryName" value="@item.MenuCategoryId">@item.CategoryName</a></li>
+                    }*@
+
+
+                @*<li class="active mx-2"><a data-toggle="tab" href="#addCategory">Add Menu Category</a></li>*@
+            </ul>
+
+            <div class="tab-content">
+                @for (int i = 0; i < ViewBag.Categories.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        <div class="tab-pane fade in active show" id="@ViewBag.Categories[i].CategoryName">
+                            @await Component.InvokeAsync("GetMenuItemsByCategory", new { categoryId = ViewBag.Categories[i].MenuCategoryId })
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="tab-pane fade in" id="@ViewBag.Categories[i].CategoryName">
+                            @await Component.InvokeAsync("GetMenuItemsByCategory", new { categoryId = ViewBag.Categories[i].MenuCategoryId })
+                        </div>
+                    }
+                }
+
+
+                @*@foreach (var item in ViewBag.Categories)
+                    {
+                        <div id="@item.CategoryName" class="tab-pane fade in">@await Component.InvokeAsync("GetMenuItemsByCategory", new { categoryId = item.MenuCategoryId })</div>
+                    }*@
+
+
+                @*<div id="addCategory" class="tab-pane fade in active">@{await Html.RenderPartialAsync("CreateMenuCategory");}</div>*@
+                @*<div id="addCategory" class="tab-pane fade in active">@await Component.InvokeAsync("CreateMenuCategory")</div>*@
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <h2 class="text-center">Order Items</h2>
+            <div class="orderBox" id="orderBox"></div>
+            <div>
+                <h4 class="text-center" id="orderTotal"></h4>
+                <button type="button" class="btn btn-primary" id="submitOrder" onclick="submitOrder()">Complete Order</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

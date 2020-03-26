@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantPosApp.Data;
 
 namespace RestaurantPosApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200326150559_PascalCasingOwnerIdProperties")]
+    partial class PascalCasingOwnerIdProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace RestaurantPosApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "515743fd-c67a-4719-b8c6-2866c683c99b",
-                            ConcurrencyStamp = "3415c6a3-00d9-485f-a846-c134b1261dc6",
+                            Id = "00b59690-292d-443f-a4e0-21b120bca757",
+                            ConcurrencyStamp = "a94ffec3-262e-415e-9ab1-21498d4d8c24",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
-                            Id = "61244637-9e27-4a6f-a71d-dcbece21687f",
-                            ConcurrencyStamp = "56a98511-e6c6-4da2-b836-20ca7528df7d",
+                            Id = "fb5ac9b7-9df0-4df7-a846-72504f435f78",
+                            ConcurrencyStamp = "9e5d281d-4b86-4c0a-90e2-1227c5500cba",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -239,7 +241,6 @@ namespace RestaurantPosApp.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PinCode")
@@ -416,11 +417,9 @@ namespace RestaurantPosApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PinCode")
@@ -470,7 +469,6 @@ namespace RestaurantPosApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OwnerId")
