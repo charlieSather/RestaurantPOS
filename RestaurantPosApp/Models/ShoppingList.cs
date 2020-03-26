@@ -15,6 +15,10 @@ namespace RestaurantPosApp.Models
         public bool IsCompleted { get; set; }
         public List<ShoppingListIngredient> ShoppingItems { get; set; }
 
+        /// <summary>
+        ///  Add DateTime properties to track shopping list's lifespan
+        /// </summary>
+
 
         [ForeignKey("Owner")]
         public string OwnerId { get; set; }

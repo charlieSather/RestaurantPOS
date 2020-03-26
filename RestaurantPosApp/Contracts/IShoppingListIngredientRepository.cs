@@ -8,9 +8,10 @@ namespace RestaurantPosApp.Contracts
 {
     public interface IShoppingListIngredientRepository : IRepositoryBase<ShoppingListIngredient>
     {
-        void CreateIngredientShoppingList(ShoppingListIngredient ingredientShoppingList);
-        void UpdateIngredientShoppingList(ShoppingListIngredient ingredientShoppingList);
-        void DeleteIngredientShoppingList(ShoppingListIngredient ingredientShoppingList);
+        void CreateShoppingListIngredient(ShoppingListIngredient shoppingListIngredient);
+        void UpdateShoppingListIngredient(ShoppingListIngredient shoppingListIngredient);
+        void DeleteShoppingListIngredient(ShoppingListIngredient shoppingListIngredient);
+        void AddRangeOfShoppingListIngredient(IEnumerable<ShoppingListIngredient> shoppingListIngredients);
         IEnumerable<ShoppingListIngredient> GetShoppingListIngredientsByShoppingListId(int shoppingListId);
 
     }

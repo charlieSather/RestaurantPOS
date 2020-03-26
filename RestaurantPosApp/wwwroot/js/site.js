@@ -71,27 +71,26 @@ function submitOrder() {
         OrderedItems: orderitems
     };
 
-    //$.post('/Owner/CreateOrder', { placedOrder: placedOrder }, () => alert("done"));
 
     $.ajax({
         type: "POST",
-        //dataType: "json",
-        //contentType: 'application/json',
         url: "/Restaurant/CreateOrder",
         data: {
             placedOrder: placedOrder
         },
         success: (data) => {
             if (data.errorMessage != undefined) {
-                alert(data.errorMessage, "SuccessERRRR");
+                alert(data.errorMessage);
             }
             else {
                 alert("Order has been placed!");
                 clearOrderWindow();
             }
-            console.log(data);
         },
-        error: (data) => alert(data, "LOL")
+        error: (data) => {
+            alert("There was an error processing the request.\nCheck console for details.");
+            console.log(data);
+        }
     });
 }
 

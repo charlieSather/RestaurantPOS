@@ -4,13 +4,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center">Add Menu Item</h1>
-
+<div class="row justify-content-between align-items-center">
+    <h1 class="text-center">Menu Item</h1>
+    @if (Model.MenuItem != null)
+    {
+        @if (Model.MenuItem.MenuItemId != 0)
+        {
+            <a class="btn btn-danger float-right"asp-action="DeleteMenuItem" asp-route-id="@Model.MenuItem.MenuItemId">Delete</a>
+        }
+    }
+</div>
 <form asp-action="AddOrEditMenuItem">
     <div class="row">
         <div class="col-md-6">
             @*<form asp-action="AddMenuItem   ">*@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (Model.MenuItem != null)
+            {
+                @if (Model.MenuItem.MenuItemId != 0)
+                {
+                    <input hidden asp-for="MenuItem.MenuItemId" value="@Model.MenuItem.MenuItemId" />
+                }
+            }
             <div class="form-group">
                 <label asp-for="MenuItem.Name" class="control-label"></label>
                 <input asp-for="MenuItem.Name" class="form-control" />
@@ -39,23 +54,18 @@
                 <select asp-for="MenuItem.MenuCategoryId" asp-items="@ViewBag.MenuCategories" class="form-control"></select>
                 <span asp-validation-for="MenuItem.MenuCategoryId" class="text-danger"></span>
             </div>
-            @if (Model.MenuItem != null)
-            {
-                <input hidden value="@Model.MenuItem.MenuItemId" />
-
-            }
             <div class="form-group">
-                <input type="submit" value="Create Menu Item" class="btn btn-primary" />
+                <input type="submit" value="Submit Menu Item" class="btn btn-primary" />
             </div>
-
-
         </div>
         <div class="col-md-6">
-            @*<form asp-action="AddRecipe" id="recipeForm">*@
-            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
             <div id="recipeContainer">
 
                 <div class="border my-3">
+                    @if (Model.Recipe != null && Model.Recipe.Count > 0 && Model.Recipe[0].MenuItemIngredientId != 0)
+                    {
+                        <input hidden asp-for="Recipe[0].MenuItemIngredientId" value="@Model.Recipe[0].MenuItemIngredientId" />
+                    }
                     <div class="form-group p-sm-4">
                         <label asp-for="Recipe[0].Quantity"></label>
                         <input asp-for="Recipe[0].Quantity" class="form-control" />
@@ -68,14 +78,15 @@
                     </div>
                 </div>
 
-
-                @*  *@
-
                 @if (Model.Recipe != null)
                 {
                     for (int i = 1; i < Model.Recipe.Count; i++)
                     {
                         <div class="border my-3">
+                            @if (Model.Recipe[i].MenuItemIngredientId != 0)
+                            {
+                                <input hidden asp-for="Recipe[i].MenuItemIngredientId" value="@Model.Recipe[i].MenuItemIngredientId" />
+                            }
                             <div class="form-group p-sm-4">
                                 <label asp-for="Recipe[i].Quantity"></label>
                                 <input asp-for="Recipe[i].Quantity" class="form-control" />
@@ -87,22 +98,14 @@
                                 <span asp-validation-for="Recipe[i].IngredientId" class="text-danger"></span>
                             </div>
                         </div>
-
                     }
 
                 }
-
-
             </div>
 
             <div class="form-group">
                 <button type="button" id="addAnotherButton" class="btn btn-primary">Add another ingredient</button>
             </div>
-
-            @*<div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>*@
-            @*</form>*@
         </div>
     </div>
 </form>

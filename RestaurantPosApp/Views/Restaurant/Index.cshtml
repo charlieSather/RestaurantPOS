@@ -5,7 +5,6 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-8">
-
             <ul class="nav nav-tabs" id="navTabs">
                 @for (int i = 0; i < ViewBag.Categories.Count; i++)
                 {
@@ -26,13 +25,6 @@
                         </li>
                     }
                 }
-                @*@foreach (var item in ViewBag.Categories)
-                    {
-                        <li><a data-toggle="tab" class="mx-2" href="#@item.CategoryName" value="@item.MenuCategoryId">@item.CategoryName</a></li>
-                    }*@
-
-
-                @*<li class="active mx-2"><a data-toggle="tab" href="#addCategory">Add Menu Category</a></li>*@
             </ul>
 
             <div class="tab-content">
@@ -51,16 +43,6 @@
                         </div>
                     }
                 }
-
-
-                @*@foreach (var item in ViewBag.Categories)
-                    {
-                        <div id="@item.CategoryName" class="tab-pane fade in">@await Component.InvokeAsync("GetMenuItemsByCategory", new { categoryId = item.MenuCategoryId })</div>
-                    }*@
-
-
-                @*<div id="addCategory" class="tab-pane fade in active">@{await Html.RenderPartialAsync("CreateMenuCategory");}</div>*@
-                @*<div id="addCategory" class="tab-pane fade in active">@await Component.InvokeAsync("CreateMenuCategory")</div>*@
             </div>
         </div>
         <div class="col-sm-4">

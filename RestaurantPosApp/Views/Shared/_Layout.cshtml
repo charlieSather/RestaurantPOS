@@ -31,20 +31,9 @@
                         {
                             @if (User.IsInRole("Owner"))
                             {
-                                @*<li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="AddOrEditMenuItem">Add Menu Item</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="AddInventory">Add Inventory</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="AddIngredients">Add Ingredients</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Statistics">Statistics</a>
-                                    </li>*@
-
-
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Statistics">Statistics</a>
+                                </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -54,13 +43,10 @@
                                         <a class="dropdown-item text-dark" asp-controller="Owner" asp-action="AddIngredients">Add Ingredients</a>
                                     </div>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Statistics">Statistics</a>
-                                </li>
+
                             }
 
                         }
-
                     </ul>
                 </div>
             </div>

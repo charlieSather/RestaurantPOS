@@ -15,9 +15,10 @@ namespace RestaurantPosApp.Data
         {
         }
 
-        public void CreateIngredientShoppingList(ShoppingListIngredient ingredientShoppingList) => Create(ingredientShoppingList);
-        public void DeleteIngredientShoppingList(ShoppingListIngredient ingredientShoppingList) => Delete(ingredientShoppingList);
-        public void UpdateIngredientShoppingList(ShoppingListIngredient ingredientShoppingList) => Update(ingredientShoppingList);
+        public void CreateShoppingListIngredient(ShoppingListIngredient shoppingListIngredient) => Create(shoppingListIngredient);
+        public void DeleteShoppingListIngredient(ShoppingListIngredient shoppingListIngredient) => Delete(shoppingListIngredient);
+        public void UpdateShoppingListIngredient(ShoppingListIngredient shoppingListIngredient) => Update(shoppingListIngredient);
         public IEnumerable<ShoppingListIngredient> GetShoppingListIngredientsByShoppingListId(int shoppingListId) => FindByCondition(x => x.ShoppingListId == shoppingListId).Include(i => i.Ingredient);
+        public void AddRangeOfShoppingListIngredient(IEnumerable<ShoppingListIngredient> shoppingListIngredients) => AddRange(shoppingListIngredients);
     }
 }

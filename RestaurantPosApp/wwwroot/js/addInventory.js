@@ -21,14 +21,12 @@
 
         parentDiv.prepend(selectDiv);
 
-        //parentDiv.append(selectDiv);
         parentDiv.insertBefore($(".form-group"));
 
         resetFormValidator("#inventory-form");
 
         itemNum++;
         return false;
-
     });
 }
 
@@ -39,9 +37,3 @@ function resetFormValidator(formId) {
 }
 
 addInventoryHandler();
-
-//<div class="col-sm-3">
-//    <label class="control-label" for="z${itemNum}__BulkPrice">BulkPrice</label>
-//    <input class="form-control" type="text" data-val="true" data-val-number="The field BulkPrice must be a number." data-val-required="The BulkPrice field is required." id="z${itemNum}__BulkPrice" name="[${itemNum}].BulkPrice" value="">
-//    <span class="text-danger field-validation-valid" data-valmsg-for="[${itemNum}].BulkPrice" data-valmsg-replace="true"></span>
-//</div>

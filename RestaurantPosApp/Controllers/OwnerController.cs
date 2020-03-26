@@ -82,7 +82,6 @@ namespace RestaurantPosApp.Controllers
                 var menuItem = _repo.MenuItem.GetMenuItem(id);
                 model.MenuItem = menuItem;
                 model.Recipe = menuItem.Recipe;
-                return View(model);
                 //build model from Db
             }
 
@@ -96,19 +95,18 @@ namespace RestaurantPosApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var ids = menuItemViewModel.Recipe.Select(x => x.IngredientId).Distinct().AsEnumerable();
+                var ingredients = _repo.Ingredient.GetIngredients(ids).ToList();
+
                 if (menuItemViewModel.MenuItem.MenuItemId == 0)
                 {
                     _repo.MenuItem.CreateMenuItem(menuItemViewModel.MenuItem);
                     _repo.Save();
 
-                    var ids = menuItemViewModel.Recipe.Select(x => x.IngredientId).Distinct().AsEnumerable();
-                    var ingredients = _repo.Ingredient.GetIngredients(ids).ToList();
-
                     foreach (var item in menuItemViewModel.Recipe)
                     {
                         var ingredient = ingredients.Single(x => x.IngredientId == item.IngredientId);
                         item.MenuItemId = menuItemViewModel.MenuItem.MenuItemId;
-                        //item.Cost = ((decimal)item.Quantity / ingredient.BaseUnitOfWeight) * ingredient.PricePerUnit;
                         item.Cost = CalculateCost(item.Quantity, ingredient.BaseUnitOfWeight, ingredient.PricePerUnit);
                     }
 
@@ -117,12 +115,21 @@ namespace RestaurantPosApp.Controllers
                 }
                 else
                 {
+                    var menuItem = menuItemViewModel.MenuItem;
+                    menuItem.Recipe = menuItemViewModel.Recipe;
 
-                    //_repo.MenuItemIngredient.UpdateMenuItemIngredient();
+                    foreach (var item in menuItem.Recipe)
+                    {
+                        var ingredient = ingredients.Single(x => x.IngredientId == item.IngredientId);
+                        item.Cost = CalculateCost(item.Quantity, ingredient.BaseUnitOfWeight, ingredient.PricePerUnit);
+                    }
+                    _repo.MenuItem.UpdateMenuItem(menuItem);
+                    _repo.Save();
                 }
 
                 return RedirectToAction(nameof(Index));
             }
+
             ViewBag.MenuCategories = new SelectList(_repo.MenuCategory.GetMenuCategories(), "MenuCategoryId", "CategoryName");
             ViewBag.Ingredients = new SelectList(_repo.Ingredient.GetIngredients(), "IngredientId", "Name");
             return View(menuItemViewModel);
@@ -130,6 +137,21 @@ namespace RestaurantPosApp.Controllers
         public decimal CalculateCost(int quantity, int unit, decimal pricePerUnit)
         {
             return ((decimal)quantity / unit) * pricePerUnit;
+        }
+
+        public IActionResult DeleteMenuItem(int id)
+        {
+            try
+            {
+                var menuItem = _repo.MenuItem.GetMenuItem(id);
+                _repo.MenuItem.DeleteMenuItem(menuItem);
+                _repo.Save();
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction(nameof(AddOrEditMenuItem), id);
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Statistics() => View();
@@ -174,13 +196,9 @@ namespace RestaurantPosApp.Controllers
                         inventoryItem.AmountInGrams += inventoryItemFromDb.AmountInGrams;
                         inventoryItem.BulkPrice = inventoryItemFromDb.BulkPrice;
                     }
-                    //inventoryItem.Ingredient = await Task.Run(() => _repo.Ingredient.GetIngredientAsNoTracking(inventoryItem.IngredientId));
 
-                    //inventoryItem.BulkPrice += ((decimal)inventoryItem.AmountInGrams / ingredient.BaseUnitOfWeight) * ingredient.PricePerUnit;
                     inventoryItem.BulkPrice += CalculateCost(inventoryItem.AmountInGrams, ingredient.BaseUnitOfWeight, ingredient.PricePerUnit);
                     inventoryItem.IsLow = InventoryItemIsLow(inventoryItem);
-
-                    //inventoryItem.Ingredient = null; //Need to make Ingredient null or ef core tries to insert it into db again which causes an exception since it has a PK already and will cause a collision
                 }
                 _repo.InventoryItem.UpdateRangeOfInventoryItems(inventoryItems);
                 _repo.Save();
@@ -194,14 +212,22 @@ namespace RestaurantPosApp.Controllers
 
         public bool InventoryItemIsLow(InventoryItem inventoryItem) => inventoryItem.AmountInGrams <= inventoryItem.LowerThreshold;
 
+        [HttpGet]
         public async Task<IActionResult> GenerateShoppingList()
         {
+            var lowInventoryItems = _repo.InventoryItem.GetLowInventoryItems().ToList();
+            if(lowInventoryItems.Count == 0)
+            {
+                return Json(new { Message = "No low inventory items, no shopping list was created." });
+            }
+
             var shoppingList = new ShoppingList();
-            //shoppingList.OwnerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            shoppingList.OwnerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             shoppingList.ShoppingItems = new List<ShoppingListIngredient>();
 
+            _repo.ShoppingList.CreateShoppingList(shoppingList);
+            _repo.Save();
 
-            var lowInventoryItems = _repo.InventoryItem.GetLowInventoryItems().ToList();
             var htmlString = "<ul>";
             foreach (var item in lowInventoryItems)
             {
@@ -218,12 +244,15 @@ namespace RestaurantPosApp.Controllers
             }
             htmlString += "</ul>";
 
-            //await _emailService.EmailAsync(new Owner { EmailAddress = "", Name = "CSather"}, htmlString);
-            return View("Statistics");
-        }
-        public void InputShoppingList(int id)
-        {
+            _repo.ShoppingListIngredient.AddRangeOfShoppingListIngredient(shoppingList.ShoppingItems);
+            _repo.Save();
 
+            //await _emailService.EmailAsync(new Owner { EmailAddress = "", Name = "CSather"}, htmlString);
+            return Json(new { Message = "Successfully generated and emailed the shopping list!"});
+        }
+        public IActionResult InputShoppingList(int id)
+        {
+            return View();
         }
 
     }
