@@ -1,2 +1,44 @@
-﻿
+﻿@model RestaurantPosApp.Models.StatisticsViewModel
+
+
+<div id="filterChart" style="width: 800px; height: 500px;"></div>
+
+@*<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>*@
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawFilterChart);
+
+    function drawFilterChart() {
+        var matrix = [];
+        matrix.push(['MenuItem','Number Sold','Money Earned']);
+
+        @foreach (var item in Model.TopSellingMenuItems)
+        {
+            <text>
+                matrix.push(['@item.Item1.Name', @item.Item2, @item.Item1.Price * @item.Item2]);
+            </text>
+        }
+        var data = google.visualization.arrayToDataTable(matrix);
+
+        var options = {
+            width: 900,
+            chart: {
+                title: 'Top Selling menu Items',
+                subtitle: 'amount sold on the left, gross earned on the right'
+            },
+            series: {
+                0: { axis: 'amount' }, // Bind series 0 to an axis named 'amount'.
+                1: { axis: 'earned' } // Bind series 1 to an axis named 'cost'.
+            },
+            axes: {
+                y: {
+                  amount: {label: 'Amount Sold'}, // Left y-axis.
+                  earned: {side: 'right', label: 'Money Earned'} // Right y-axis.
+                }
+            }
+        };
+        var chart = new google.charts.Bar(document.getElementById('filterChart'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+</script>
 

@@ -247,11 +247,26 @@ namespace RestaurantPosApp.Controllers
             _repo.ShoppingListIngredient.AddRangeOfShoppingListIngredient(shoppingList.ShoppingItems);
             _repo.Save();
 
-            //await _emailService.EmailAsync(new Owner { EmailAddress = "", Name = "CSather"}, htmlString);
+            await _emailService.EmailAsync(new Owner { EmailAddress = "", Name = "CSather"}, htmlString);
             return Json(new { Message = "Successfully generated and emailed the shopping list!"});
         }
         public IActionResult InputShoppingList(int id)
         {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult GetTopSellingMenuItemsByDateRange(DateTime start, DateTime end)
+        {
+            var model = new StatisticsViewModel();
+            var result = _repo.OrderMenuItem.GetTopSellingMenuItemsByDate(start, end, 2).ToList();
+
+            model.TopSellingMenuItems = result;
+            return PartialView("_StatisticsFilter",model);
+        }
+
+        public IActionResult GetOrdersByDateRange(DateTime start, DateTime end)
+        {
+
             return View();
         }
 

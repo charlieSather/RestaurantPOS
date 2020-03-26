@@ -11,6 +11,9 @@ namespace RestaurantPosApp.Contracts
         void CreateOrderMenuItem(OrderMenuItem orderMenuItem);
         void UpdateOrderMenuItem(OrderMenuItem orderMenuItem);
         void UpdateOrderMenuItems(List<OrderMenuItem> orderMenuItems);
+        int NumberSoldByDateRange(int menuItemId, DateTime start, DateTime end);
         IQueryable<OrderMenuItem> GetOrderMenuItemsByOrderId(int orderId);
+        IQueryable<OrderMenuItem> GetOrderMenuItemsByMenuItemId(int menuItemId);
+        IEnumerable<Tuple<MenuItem, int>> GetTopSellingMenuItemsByDate(DateTime start, DateTime end, int amount = 0);    
     }
 }

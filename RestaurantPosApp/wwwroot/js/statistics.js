@@ -4,7 +4,7 @@
         url: "/Owner/GenerateShoppingList",
         success: (data) => {
             if (data.message != undefined) {
-                alert(data.message, "SuccessERRRR");
+                alert(data.message);
             }
             else {
             }
@@ -17,7 +17,31 @@
     });
 }
 
+function filterByDate() {
+    var start = $("#start-input").val();
+    var end = $("#end-input").val();
+    var data = {
+        start: start,
+        end: end
+    };
+
+
+    $.ajax({
+        type: "Get",
+        url: "/Owner/GetTopSellingMenuItemsByDateRange",
+        data: data,
+        error: (data) => {
+            alert("There was an error processing the request.\nCheck console for details.");
+            console.log(data);
+        }
+    })
+    .then((data) => {
+        $("#chart-container").html(data);
+     });
+}
+
 
 $(document).ready(() => {
     $("#generate-list-button").click(generateShoppingList);
+    $("#filter-button").click(filterByDate)
 });

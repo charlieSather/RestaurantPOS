@@ -9,6 +9,7 @@ namespace RestaurantPosApp.Models
     {
         public List<PlacedOrder> Orders { get; set; }
         public List<MenuItem> MenuItems { get; set; }
+        public List<Tuple<MenuItem,int>> TopSellingMenuItems { get; set; }
         public List<InventoryItem> Inventory { get; set; }
     }
 }
