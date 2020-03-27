@@ -94,7 +94,7 @@ namespace RestaurantPosApp.Controllers
                 {
                     var menuItem = menuItems.Find(x => x.Recipe.Exists(x => x.IngredientId == orderResult.Item2));
                     var menuItemingredient = menuItem.Recipe.Find(x => x.IngredientId == orderResult.Item2);
-                    var errorMessage = $"Sorry, we Can't make {menuItem.Name} as we have don't have enough {menuItemingredient.Ingredient.Name}";
+                    var errorMessage = $"Sorry, we can't make {menuItem.Name} as we have don't have enough {menuItemingredient.Ingredient.Name}";
                     return Json(new { ErrorMessage = errorMessage });
                 }
                 return RedirectToAction(nameof(Index));

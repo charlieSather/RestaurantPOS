@@ -37,7 +37,7 @@ namespace RestaurantPosApp.Data
         public IEnumerable<Tuple<MenuItem, int>> GetTopSellingMenuItemsByDate(DateTime start, DateTime end, int amount = 0)
         {
             var result = FindByCondition(x => x.PlacedOrder.OrderedTimestamp.Date >= start.Date && x.PlacedOrder.OrderedTimestamp.Date <= end.Date)
-                            .Include(m => m.MenuItem)
+                            .Include(m => m.MenuItem).ThenInclude(r => r.Recipe)
                             .ToList()
                             .GroupBy(x => x.MenuItemId)
                             .Select(x => Tuple.Create(x.FirstOrDefault(m => x.Key == m.MenuItemId).MenuItem, x.Sum(q => q.Quantity)))

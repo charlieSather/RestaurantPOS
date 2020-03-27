@@ -36,9 +36,11 @@ function filterByDate() {
         }
     })
     .then((data) => {
+        $("#chart-container").hide();
         $("#chart-container").html(data);
-     });
-}
+        $("#chart-container").fadeIn(500);
+    });
+    }
 
 
 $(document).ready(() => {

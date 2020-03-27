@@ -21,10 +21,6 @@ namespace RestaurantPosApp.Data
         public void UpdateMenuItemIngredient(MenuItemIngredient menuItemIngredient) => Update(menuItemIngredient);
         public void AddListOfMenuItemIngredients(List<MenuItemIngredient> menuItemIngredients)
         {
-            //foreach (var menuItemIngredient in menuItemIngredients)
-            //{
-            //    menuItemIngredient.MenuItemId = menuItemId;
-            //}
             AddRange(menuItemIngredients);
         }
         public void UpdateListOfMenuItemIngredients(List<MenuItemIngredient> menuItemIngredients)
