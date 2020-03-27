@@ -28,12 +28,32 @@ a {
     flex-direction: column;
     height: 75vh;
     border: 2px solid black;
+    border-radius: 3px;
+}
+.total-box{
+    margin-top: .25rem;
+    display: flex;
+    flex-direction:row;
+    justify-content:flex-end;
+    align-items: center;
+}
+.justify-start{
+    margin-right:auto;
 }
 #tab-content {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
+    flex-wrap: wrap;
+}
+.order-item {
+    border: groove;
+    border-radius: 3px;
+    padding: 4px;
+}
+.card {
+    width: 30%;
+    margin: 0.5em;
 }
 .quantityInput{
     width:15%;
@@ -44,6 +64,8 @@ a {
     align-items: center;
     margin: 4px;
 }
+
+
 /*undo margins in default bootstrap .row
 .row{
     margin-right: 0;

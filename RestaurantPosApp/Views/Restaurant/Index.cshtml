@@ -48,9 +48,10 @@
         <div class="col-sm-4">
             <h2 class="text-center">Order Items</h2>
             <div class="orderBox" id="orderBox"></div>
-            <div>
-                <h4 class="text-center" id="orderTotal"></h4>
-                <button type="button" class="btn btn-primary" id="submitOrder" onclick="submitOrder()">Complete Order</button>
+            <div class="total-box">
+                <button type="button" class="btn btn-primary justify-start" id="submitOrder" onclick="submitOrder()">Complete Order</button>
+                <h4>Total:</h4>
+                <h4 id="orderTotal"></h4>
             </div>
         </div>
     </div>

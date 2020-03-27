@@ -20,8 +20,6 @@ namespace RestaurantPosApp.Services
         {
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress(Keys.System_Email, "Milwaukee POS");
-
-            //TODO pass in htmlContent
             var subject = "Shopping List";
             var to = new EmailAddress(owner.EmailAddress, owner.Name);
             var plainTextContent = "Here's your shopping list!";

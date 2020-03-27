@@ -16,7 +16,7 @@ namespace RestaurantPosApp.Models
         public List<ShoppingListIngredient> ShoppingItems { get; set; }
 
         /// <summary>
-        ///  Add DateTime properties to track shopping list's lifespan
+        ///  Todo: add DateTime properties to track shopping list's lifespan
         /// </summary>
 
 
