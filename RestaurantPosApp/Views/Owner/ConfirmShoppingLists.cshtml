@@ -1,0 +1,24 @@
+﻿@model IEnumerable<RestaurantPosApp.Models.ShoppingList>
+
+<h2 class="text-center">Shopping Lists</h2>
+
+
+
+@foreach (var item in Model)
+{
+    <div class="row mb-4">
+        <div class="col-sm-8 justify-content-center">
+           <ul class="list-group">
+               @foreach (var shoppingItem in item.ShoppingItems)
+               {
+                   <li class="list-group-item">
+                       @shoppingItem.Ingredient.Name : @shoppingItem.AmountInGrams grams.
+                   </li>
+               }
+           </ul>
+        </div>
+        <div class="col-sm-4 justify-content-center align-items-center">
+            <a class="btn btn-primary" asp-action="ConfirmShoppingList" asp-route-id="@item.ShoppingListId">Confirm Shopping List</a>
+        </div>
+    </div>
+}

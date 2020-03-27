@@ -18,8 +18,13 @@ namespace RestaurantPosApp.Data
         public void CreateShoppingList(ShoppingList shoppingList) => Create(shoppingList);
         public void DeleteShoppingList(ShoppingList shoppingList) => Delete(shoppingList);
         public void UpdateShoppingList(ShoppingList shoppingList) => Update(shoppingList);
-        public IEnumerable<ShoppingList> GetShoppingListByStatus(bool status) => FindByCondition(x => x.IsCompleted == status).Include(x => x.ShoppingItems);
-        public IEnumerable<ShoppingList> GetShoppingListByOwnerId(string ownerId) => FindByCondition(x => x.OwnerId == ownerId).Include(x => x.ShoppingItems);
+        public ShoppingList GetShoppingList(int id) =>
+            FindByCondition(x => x.ShoppingListId == id)
+                .Include(x => x.ShoppingItems)
+                .ThenInclude(x => x.Ingredient)
+                .FirstOrDefault();
+        public IEnumerable<ShoppingList> GetShoppingListByStatus(bool status) => FindByCondition(x => x.IsCompleted == status).Include(x => x.ShoppingItems).ThenInclude(i => i.Ingredient);
+        public IEnumerable<ShoppingList> GetShoppingListByOwnerId(string ownerId) => FindByCondition(x => x.OwnerId == ownerId).Include(x => x.ShoppingItems).ThenInclude(i => i.Ingredient);
 
     }
 }

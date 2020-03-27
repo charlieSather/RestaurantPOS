@@ -247,13 +247,46 @@ namespace RestaurantPosApp.Controllers
             _repo.ShoppingListIngredient.AddRangeOfShoppingListIngredient(shoppingList.ShoppingItems);
             _repo.Save();
 
-            await _emailService.EmailAsync(new Owner { EmailAddress = "", Name = "CSather"}, htmlString);
+            var owner = _repo.Owner.GetOwner(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            //await _emailService.EmailAsync(owner, htmlString);
             return Json(new { Message = "Successfully generated and emailed the shopping list!"});
         }
-        public IActionResult InputShoppingList(int id)
+
+        [HttpGet]
+        public IActionResult ConfirmShoppingLists()
         {
-            return View();
+            var model = _repo.ShoppingList.GetShoppingListByStatus(false);
+            return View(model);
         }
+
+        public IActionResult ConfirmShoppingList(int id)
+        {
+            var shoppingList = _repo.ShoppingList.GetShoppingList(id);
+            shoppingList.IsCompleted = true;
+
+            var ingredientIds = shoppingList.ShoppingItems.Select(x => x.IngredientId).ToList();
+            var inventoryItems = _repo.InventoryItem.GetInventoryItemsByIngredientList(ingredientIds).ToList();
+
+            foreach (var item in inventoryItems)
+            {
+                var shoppingListItem = shoppingList.ShoppingItems.Find(x => x.IngredientId == item.IngredientId);
+                item.AmountInGrams += shoppingListItem.AmountInGrams;
+                item.BulkPrice = CalculateCost(item.AmountInGrams, shoppingListItem.Ingredient.BaseUnitOfWeight, shoppingListItem.Ingredient.PricePerUnit);
+                item.IsLow = InventoryItemIsLow(item);
+            }
+
+            _repo.InventoryItem.UpdateRangeOfInventoryItems(inventoryItems);
+            _repo.Save();
+
+
+            shoppingList.ShoppingItems = null;
+            _repo.ShoppingList.UpdateShoppingList(shoppingList);
+            _repo.Save();
+
+            return RedirectToAction(nameof(ConfirmShoppingLists));
+        }
+
         [HttpGet]
         public IActionResult GetTopSellingMenuItemsByDateRange(DateTime start, DateTime end)
         {
@@ -262,12 +295,6 @@ namespace RestaurantPosApp.Controllers
 
             model.TopSellingMenuItems = result;
             return PartialView("_StatisticsFilter",model);
-        }
-
-        public IActionResult GetOrdersByDateRange(DateTime start, DateTime end)
-        {
-
-            return View();
         }
 
     }
