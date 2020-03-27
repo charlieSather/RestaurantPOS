@@ -57,6 +57,7 @@ namespace RestaurantPosApp.Controllers
             {
                 var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 var owner = _repo.Owner.GetOwner(userId);
+
                 restaurant.OwnerId = owner.OwnerId;
                 _repo.Restaurant.CreateRestaurant(restaurant);
                 _repo.Save();
@@ -157,7 +158,6 @@ namespace RestaurantPosApp.Controllers
         }
         public bool InventoryItemIsLow(InventoryItem inventoryItem) => inventoryItem.AmountInGrams <= inventoryItem.LowerThreshold;
 
-     
         public IActionResult Privacy()
         {
             return View();

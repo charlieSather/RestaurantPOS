@@ -14,7 +14,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-dark navbar-expand-sm navbar-toggleable-sm bg-primary border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Restaurant" asp-action="Index">RestaurantPosApp</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -25,23 +25,23 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Index">Restaurant</a>
+                            <a class="nav-link" asp-area="" asp-controller="Restaurant" asp-action="Index">Restaurant</a>
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             @if (User.IsInRole("Owner"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Statistics">Statistics</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Owner" asp-action="Statistics">Statistics</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item text-dark" asp-controller="Owner" asp-action="CreateMenuCategory">Add Menu Category</a>
-                                        <a class="dropdown-item text-dark" asp-controller="Owner" asp-action="AddOrEditMenuItem">Add Menu Items</a>
-                                        <a class="dropdown-item text-dark" asp-controller="Owner" asp-action="AddInventory">Add Inventory</a>
-                                        <a class="dropdown-item text-dark" asp-controller="Owner" asp-action="AddIngredients">Add Ingredients</a>
-                                        <a class="dropdown-item text-dark" asp-controller="Owner" asp-action="ConfirmShoppingLists">Confirm Shopping Lists</a>
+                                        <a class="dropdown-item" asp-controller="Owner" asp-action="CreateMenuCategory">Add Menu Category</a>
+                                        <a class="dropdown-item" asp-controller="Owner" asp-action="AddOrEditMenuItem">Add Menu Items</a>
+                                        <a class="dropdown-item" asp-controller="Owner" asp-action="AddInventory">Add Inventory</a>
+                                        <a class="dropdown-item" asp-controller="Owner" asp-action="AddIngredients">Add Ingredients</a>
+                                        <a class="dropdown-item" asp-controller="Owner" asp-action="ConfirmShoppingLists">Confirm Shopping Lists</a>
                                     </div>
                                 </li>
 

@@ -291,7 +291,9 @@ namespace RestaurantPosApp.Controllers
         public IActionResult GetTopSellingMenuItemsByDateRange(DateTime start, DateTime end)
         {
             var model = new StatisticsViewModel();
-            var result = _repo.OrderMenuItem.GetTopSellingMenuItemsByDate(start, end, 2).ToList();
+            var grabTopTen = 10;
+
+            var result = _repo.OrderMenuItem.GetTopSellingMenuItemsByDate(start, end, grabTopTen).ToList();
 
             model.TopSellingMenuItems = result;
             return PartialView("_StatisticsFilter",model);
